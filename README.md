@@ -2,7 +2,18 @@
 
 The early 2010s began a period of internet-based activism that was immediately embraced by much of mainstream liberalism without any rigorous analysis or appraisal of the organizational structure and limitations of these internet-based movements (Nagle, 2017). Image based web forums such as Reddit, 4chan and 8chan were the basis of many of these movements.
 
+## File Structure
 
+ - Data: All data retrieved using code in the import folder can be found here.
+ 
+ - Import: All code used to import images and collect metadata.
+ 
+ - Analysis: Single function ala Qtip to conduct analysis for all but stack features. Set good defaults, but allow passage of arguments to other underlying functions like those in color distance.
+ 
+ - Output: There are three output models: ImagePlot, Image Montage, and ggplot2 with geom_image. Subsequent visual analyses including histograms and gganimate.
+
+ 
+ - Images: Images used in analysis (way too much for data folder so condensed as a zip?)
 
 ## Citations
 
@@ -14,7 +25,7 @@ The early 2010s began a period of internet-based activism that was immediately e
 3. 
 
 
-** Package Dependencies**
+**Package Dependencies**
 
 - [ImageFluency](https://github.com/stm/imagefluency)
 
