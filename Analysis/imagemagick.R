@@ -11,5 +11,3 @@ measure_images<-function(x){
   print(meta)
   
 }
-
-measure_images(images)
