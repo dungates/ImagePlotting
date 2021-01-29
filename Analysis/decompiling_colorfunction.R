@@ -1,5 +1,5 @@
 #original function call
-plot2<-function (img, n = 10000, lower = c(0, 0.55, 0), upper = c(0.25, 
+plot2 <- function (img, n = 10000, lower = c(0, 0.55, 0), upper = c(0.25, 
                                                            1, 0.25), color.space = "rgb", ref.white = NULL, pch = 20, 
           main = "default", from = "sRGB", xlim = "default", ylim = "default", 
           zlim = "default", ...) 
