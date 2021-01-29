@@ -4,15 +4,15 @@
 load_images<-function(y){
   #x in this case is the name of the directory with the images
   #images would be a great example
-  working<-getwd()
+  working <- getwd()
   #return file list, full.names allows passage of the entire file paths
-  return1<-list.files(y, full.names = TRUE)
+  return1 <- list.files(y, full.names = TRUE)
   #prints proof of concept
   print(return1)
   #full paths, if needed
-  return2<-paste(working,return1, sep="")
+  return2 <- paste(working,return1, sep="")
   #assign back to global environment
-  images<<-data.frame("local_path"=return1, "global_path"=return2)
+  images <<- data.frame("local_path" = return1, "global_path" = return2)
 }
 
 #test code
