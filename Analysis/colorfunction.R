@@ -1,7 +1,6 @@
 # color distance
-
+library(colordistance)
 colors <- function(X, Y) {
-  library(colordistance)
   loader <- loadImage(images$local_path, sample.size = 5000)
   plot <- loader$filtered.rgb.2d
   plot2 <- data.frame(plot)

@@ -1,6 +1,6 @@
+library(dplyr)
 symmetry <- function(X) {
   # this routine segments the image into 16 regions and calculates symmetry
-  library(dplyr)
   rudy <- magick::image_read(images$local_path)
   ZZZZ <- imager::magick2cimg(rudy)
   ZZZZZ <- as.data.frame(ZZZZ)

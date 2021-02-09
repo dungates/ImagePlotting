@@ -1,3 +1,6 @@
+library(dplyr)
+library(moments)
+
 edge_analysis <- function(x) {
   # SEGMENTATION PROCESS
   # edgesdataframe
@@ -10,7 +13,6 @@ edge_analysis <- function(x) {
   P <- max(ZZZZZ$x)
   # select quarter regions
   # regions start in the upper left and head for bottom right
-  library(dplyr)
 
   # select regions
   # TOP ROW
@@ -135,8 +137,6 @@ edge_analysis <- function(x) {
     R15_edge, R15_edge_dev,
     R16_edge, R16_edge_dev
   )
-
-  library(moments)
 
   ST <- data.frame(
     kurtosis(R1$value),

@@ -17,3 +17,11 @@ load_images <- function(y) {
 
 # test code
 load_images("Images")
+
+
+
+
+
+
+
+
