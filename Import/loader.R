@@ -23,5 +23,3 @@ load_images("Images")
 
 
 
-
-
