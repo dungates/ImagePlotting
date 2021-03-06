@@ -14,9 +14,10 @@ A <- OpenImageR::readImage(images$local_path)
 # it prefers dataframes
 B <- data.frame(A)
 C <- OpenImageR::resizeImage(B, 200, 200)
-OpenImageR::writeImage(C, "nerb.png")
+dir.create(here("ImagesOutput/"), showWarnings = F)
+OpenImageR::writeImage(C, here("ImagesOutput/nerb.png"))
 
 
-OpenImageR::GaborFeatureExtract(images$local_path)
+OpenImageR::GaborFeatureExtract$new(images$local_path)
 
 imager::resize(images$local_path)

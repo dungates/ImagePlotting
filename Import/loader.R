@@ -19,7 +19,3 @@ load_images <- function(y) {
 load_images("Images")
 
 
-
-
-
-

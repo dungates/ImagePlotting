@@ -12,7 +12,7 @@ measure_images <- function(x) {
 
 # this is horribly slow
 fluency <- function(x) {
-  t <- img_read(images$local_path)
+  t <- img_read(images$local_path[1])
   a <- img_contrast(t)
   b <- img_self_similarity(t)
   c <- img_symmetry(t)

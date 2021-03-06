@@ -1,7 +1,11 @@
 Package: ImagePlotting
 Title: Analyzing and Plotting
 Version: 0.0.0.9000
-Authors@R: Duncan Gates, Dan Faltesek, Spencer Bonnell, Savannah Loesberger
+Authors@R: person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Analyzes various metrics and components of images. Makes cool plots.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
