@@ -57,12 +57,11 @@ measure_images <- function(x = images$local_path) {
 #' @examples
 #' fluency(here("Images/image_1.png"))
 fluency <- function(x = images$local_path, index = 1) {
-  t <- x[index] %>% 
-    purrr::map( ~ img_read(.))
-  result <- as.data.frame(a = magick::img_contrast(t[1]),
-                      b = magick::img_self_similarity(t[1]),
-                      c = magick::img_symmetry(t[1]),
-                      d = magick::img_complexity(t[1]))
+  t <- img_read(images$local_path[index])
+  result <- as.data.frame(a = imagefluency::img_contrast(t),
+                          b = imagefluency::img_self_similarity(t),
+                          c = imagefluency::img_symmetry(t),
+                          d = imagefluency::img_complexity(t))
 }
 
 
@@ -70,10 +69,9 @@ fluency <- function(x = images$local_path, index = 1) {
 #' 
 #' @title Image Symmetry
 #' 
-#' @param X Folder where images are stored
+#' @param x Folder where images are stored
 #' 
-#' 
-#' @return Returns image symmetry by quarters
+#' @return Returns a dataframe image symmetry by quarters, where each row is an image file
 #' @export
 #' 
 #' @examples
@@ -241,16 +239,15 @@ symmetry <- function(x = images$local_path) {
 #' 
 #' @param x Folder where images are stored
 #' 
-#' 
-#' @return Returns a dataframe consisting of images, PQ, ST
+#' @return Returns a dataframe (edge_report) consisting of images, PQ, ST
 #' @export
 #' 
 #' @examples
 #' load_images(here("Images/"))
-edge_analysis <- function() {
+edge_analysis <- function(x = images$local_path) {
   # SEGMENTATION PROCESS
   # edgesdataframe
-  rudy <- magick::image_read(images$local_path)
+  rudy <- magick::image_read(x)
   rudy2 <- magick::image_canny(rudy)
   ZZZZ <- imager::magick2cimg(rudy2)
   ZZZZZ <- as.data.frame(ZZZZ)
@@ -382,7 +379,7 @@ edge_analysis <- function() {
     R14_edge, R14_edge_dev,
     R15_edge, R15_edge_dev,
     R16_edge, R16_edge_dev
-  )
+  ) 
   
   ST <- data.frame(
     kurtosis(R1$value),
@@ -426,7 +423,19 @@ edge_analysis <- function() {
 #' 
 #' @title Plot images
 #' 
-#' @param img,n=1000,lower=c(0,0.55,0),upper=c(0.25,1,0.25),color.space="rgb",ref.white=NULL,pch=20,main="default",from="sRGB",xlim="default",ylim="default",zlim="default",...
+#' @param img
+#' @param n=1000 
+#' @param lower=c(0,0.55,0)
+#' @param upper=c(0.25,1,0.25)
+#' @param color.space="rgb"
+#' @param ref.white=NULL
+#' @param pch=20
+#' @param main="default"
+#' @param from="sRGB"
+#' @param xlim="default"
+#' @param ylim="default"
+#' @param zlim="default"
+#' @param ...
 #' 
 #' 
 #' @return returns a plot
