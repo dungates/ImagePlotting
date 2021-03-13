@@ -1,13 +1,3 @@
-# library(here) # calls the working directory
-# library(colordistance)
-# library(imagefluency)
-# library(magick)
-# library(imager)
-# library(OpenImageR)
-# library(dplyr)
-# library(moments)
-
-# perhaps add another function to name the output dataframe
 #' Load all images into one
 #' 
 #' @title Image Loader
@@ -23,7 +13,7 @@
 load_images <- function(y) {
   # x in this case is the name of the directory with the images
   # images would be a great example
-  working <- here()
+  working <- here::here()
   # return file list, full.names allows passage of the entire file paths
   return1 <- list.files(y, full.names = TRUE)
   # prints proof of concept
@@ -34,10 +24,9 @@ load_images <- function(y) {
   images <<- data.frame("local_path" = return1, "global_path" = return2)
 }
 
-# reasonably fast, somewhat annoying to parse through a magick pointer
-#' Measure image information and ocr
-#' 
 #' @title Measure Image
+#' 
+#' @description Measure image information and ocr. Reasonably fast, somewhat annoying to parse through a magick pointer.
 #' 
 #' @param x Image to be read in
 #' 
@@ -47,43 +36,41 @@ load_images <- function(y) {
 #' 
 #' @examples
 #' measure_images(here("Images/image_1.png"))
-measure_images <- function(x) {
-  nerb <- image_read(images$local_path)
-  text <- cat(image_ocr(nerb))
-  meta <- image_info(nerb)
+measure_images <- function(x = images$local_path) {
+  nerb <- magick::image_read(images$local_path)
+  text <- cat(magick::image_ocr(nerb))
+  meta <- magick::image_info(nerb)
   print(meta)
-  print(text)
+  text
 }
 
-# this is horribly slow
 #' Get image fluency
 #' 
 #' @title Fluency
 #' 
-#' @param x Image to be read in
-#' 
+#' @param x Images to be read in
+#' @param index Index of image to be read in, default is 1
 #' 
 #' @return Returns image contrast, similarity, symmetry, complexity
 #' @export
 #' 
 #' @examples
 #' fluency(here("Images/image_1.png"))
-fluency <- function(x) {
-  t <- images$local_path %>% 
-    map( ~ img_read(.))
-  result <- as.data.frame(a = img_contrast(t[1]),
-                      b = img_self_similarity(t[1]),
-                      c = img_symmetry(t[1]),
-                      d = img_complexity(t[1]))
+fluency <- function(x = images$local_path, index = 1) {
+  t <- x[index] %>% 
+    purrr::map( ~ img_read(.))
+  result <- as.data.frame(a = magick::img_contrast(t[1]),
+                      b = magick::img_self_similarity(t[1]),
+                      c = magick::img_symmetry(t[1]),
+                      d = magick::img_complexity(t[1]))
 }
 
 
-# symmetry function
 #' Gets image symmetry
 #' 
 #' @title Image Symmetry
 #' 
-#' @param x Folder where images are stored
+#' @param X Folder where images are stored
 #' 
 #' 
 #' @return Returns image symmetry by quarters
@@ -91,9 +78,9 @@ fluency <- function(x) {
 #' 
 #' @examples
 #' symmetry(here("Images/"))
-symmetry <- function(X) {
+symmetry <- function(x = images$local_path) {
   # this routine segments the image into 16 regions and calculates symmetry
-  rudy <- magick::image_read(images$local_path)
+  rudy <- magick::image_read(x)
   ZZZZ <- imager::magick2cimg(rudy)
   ZZZZZ <- as.data.frame(ZZZZ)
   ZZZZZ <- ZZZZZ %>%
@@ -260,10 +247,10 @@ symmetry <- function(X) {
 #' 
 #' @examples
 #' load_images(here("Images/"))
-edge_analysis <- function(x) {
+edge_analysis <- function() {
   # SEGMENTATION PROCESS
   # edgesdataframe
-  rudy <- magick::image_read(x$local_path)
+  rudy <- magick::image_read(images$local_path)
   rudy2 <- magick::image_canny(rudy)
   ZZZZ <- imager::magick2cimg(rudy2)
   ZZZZZ <- as.data.frame(ZZZZ)
