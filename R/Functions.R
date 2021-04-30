@@ -5,6 +5,7 @@
 # library(imager)
 # library(OpenImageR)
 # library(dplyr)
+# library(ggplot2)
 # library(moments)
 # library(purrr)
 
@@ -24,7 +25,7 @@
 load_images <- function(y) {
   # x in this case is the name of the directory with the images
   # images would be a great example
-  working <- here()
+  working <- here::here()
   # return file list, full.names allows passage of the entire file paths
   return1 <- list.files(y, full.names = TRUE)
   # prints proof of concept
@@ -49,9 +50,9 @@ load_images <- function(y) {
 #' @examples
 #' measure_images(here("Images/image_1.png"))
 measure_images <- function(x) {
-  nerb <- image_read(images$local_path)
-  text <- image_ocr(nerb)
-  meta <- image_info(nerb)
+  nerb <- magick::image_read(images$local_path)
+  text <- magick::image_ocr(nerb)
+  meta <- magick::image_info(nerb)
   print(meta)
   print(text)
 }
@@ -71,11 +72,11 @@ measure_images <- function(x) {
 #' fluency(here("Images/image_1.png"))
 fluency <- function(x) {
   t <- images$local_path %>% 
-    map( ~ img_read(.))
-  result <- as.data.frame(a = img_contrast(t[1]),
-                      b = img_self_similarity(t[1]),
-                      c = img_symmetry(t[1]),
-                      d = img_complexity(t[1]))
+    map( ~ magick::img_read(.))
+  result <- as.data.frame(a = imagefluency::img_contrast(t[1]),
+                      b = imagefluency::img_self_similarity(t[1]),
+                      c = imagefluency::img_symmetry(t[1]),
+                      d = imagefluency::img_complexity(t[1]))
 }
 
 
@@ -107,71 +108,71 @@ symmetry <- function(X) {
   # select regions
   # TOP ROW
   R1 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R2 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R3 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R4 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   # UPPER MIDDLE ROW
   R5 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .25 * P & y < .5 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .25 * P & y < .5 * P)
   
   R6 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .25 * P & y < .5 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .25 * P & y < .5 * P)
   
   R7 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .25 * P & y < .5 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .25 * P & y < .5 * P)
   
   R8 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .25 * P & y < .5 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .25 * P & y < .5 * P)
   
   # LOWER MIDDLE ROW
   R9 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R10 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R11 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R12 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   # bottom row
   R13 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R14 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R15 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R16 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   
   # color function
@@ -277,71 +278,71 @@ edge_analysis <- function(x) {
   # select regions
   # TOP ROW
   R1 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R2 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R3 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   R4 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > 0 & y < .25 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
   
   # UPPER MIDDLE ROW
   R5 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .25 & y < .5 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .25 & y < .5 * P)
   
   R6 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .25 & y < .5 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .25 & y < .5 * P)
   
   R7 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .25 & y < .5 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .25 & y < .5 * P)
   
   R8 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .25 & y < .5 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .25 & y < .5 * P)
   
   # LOWER MIDDLE ROW
   R9 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R10 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R11 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   R12 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .5 * P & y < .75 * P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
   
   # bottom row
   R13 <- ZZZZZ %>%
-    filter(x > 0 & x < .25 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R14 <- ZZZZZ %>%
-    filter(x > .25 * Q & x < .5 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R15 <- ZZZZZ %>%
-    filter(x > .5 * Q & x < .75 * Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   R16 <- ZZZZZ %>%
-    filter(x > .75 * Q & x < Q) %>%
-    filter(y > .75 * P & y < P)
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
   
   # sums of each region for canny edge
   R1_edge <- sum(R1$value)
