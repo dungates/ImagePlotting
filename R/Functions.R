@@ -6,6 +6,7 @@
 # library(OpenImageR)
 # library(dplyr)
 # library(moments)
+# library(purrr)
 
 # perhaps add another function to name the output dataframe
 #' Load all images into one
@@ -49,7 +50,7 @@ load_images <- function(y) {
 #' measure_images(here("Images/image_1.png"))
 measure_images <- function(x) {
   nerb <- image_read(images$local_path)
-  text <- cat(image_ocr(nerb))
+  text <- image_ocr(nerb)
   meta <- image_info(nerb)
   print(meta)
   print(text)
@@ -482,7 +483,7 @@ zlim = "default", ...) {
   
   # error control
   else if (!is.list(img)) {
-    stop("'img' must be either a valid filepath to an image or a loadImage\n         object")
+    stop("'img' must be either a valid filepath to an image or a loadImage\n object")
   }
   if (main == "default") {
     main <- paste(basename(img$path), ",", n, "points")
