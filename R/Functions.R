@@ -32,7 +32,7 @@ load_images <- function(y) {
 #'
 #' @param x Image to be read in
 #'
-#'
+#' @details This function returns a unified dataframe that takes your loaded images dataframe and returns a dataframe with image measurements and an OCR reading of the text from the image.
 #' @return Returns a dataframe called "measured_images" that is the meta data for the images and an OCR of image text
 #' @export
 #'
@@ -57,7 +57,7 @@ measure_images <- function(x) {
 #'
 #' @return Returns image contrast, similarity, symmetry, complexity
 #' @export
-#'
+#' @details this function implements multiple tests from the Imagefluency package returning a single dataframe, this function can take quite a while to run.
 #' @examples
 #' fluency(here("Images/image_1.png"))
 fluency <- function(images) {
@@ -79,7 +79,7 @@ fluency <- function(images) {
 #'
 #' @param x Folder where images are stored
 #'
-#'
+#' @details This function relies on a 16 element grid where each cell is one quarter of the grid X and Y. The grid is numbered starting in the upper left hand corner progressing left to right across each row.
 #' @return Returns image symmetry by quarters
 #' @export
 #'
