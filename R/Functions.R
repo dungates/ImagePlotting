@@ -80,6 +80,7 @@ fluency <- function(images) {
 #' @param x Folder where images are stored
 #'
 #' @details This function relies on a 16 element grid where each cell is one quarter of the grid X and Y. The grid is numbered starting in the upper left hand corner progressing left to right across each row.
+#' @details An image is available showing where each element is in a grid. 
 #' @return Returns image symmetry by quarters
 #' @export
 #'
