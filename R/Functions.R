@@ -44,7 +44,7 @@ load_images <- function(y) {
 #' @param x Image to be read in
 #'
 #'
-#' @return Returns image information and text to console
+#' @return Returns a dataframe called "measured_images" that is the meta data for the images and an OCR of image text
 #' @export
 #'
 #' @examples
@@ -53,8 +53,9 @@ measure_images <- function(x) {
   nerb <- magick::image_read(images$local_path)
   text <- magick::image_ocr(nerb)
   meta <- magick::image_info(nerb)
-  print(meta)
-  print(text)
+  A <-data.frame(meta)
+  measured_images<<-dplyr::bind_cols(A, text)
+  print(measured_images)
 }
 
 # this is horribly slow
