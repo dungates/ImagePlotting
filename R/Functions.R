@@ -582,7 +582,8 @@ zlim = "default", ...) {
 #' 
 #' @title Image plotter
 #' 
-#' @param X,Y
+#' @param X does a thing
+#' @param Y
 #' 
 #' 
 #' @return returns a dataframe of images
@@ -659,12 +660,12 @@ colors <- function(X, Y) {
   )
 }
 
-#function that allows you to pass alpha to a GG plot that also encodes other things
-#D is where the data is
-#X is the X var
-#Y is the Y var
-#A is the alpha
-#S is relative size
+#' function that allows you to pass alpha to a GG plot that also encodes other things
+#' @param D is where the data is
+#' @param X is the X var
+#' @param Y is the Y var
+#' @param A is the alpha
+#' @param S is relative size
 imageplot_output<-function(D,X,Y,A,S){
   transparent <- function(img) {
     B<-paste(A, "*a", sep="")
