@@ -22,5 +22,6 @@ Imports:
   OpenImageR, 
   dplyr, 
   moments, 
-  purrr
+  purrr,
+  tesseract
 RoxygenNote: 7.1.1
