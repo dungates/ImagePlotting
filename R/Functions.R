@@ -63,7 +63,7 @@ measure_images <- function(x) {
 #'
 #' @title Fluency
 #'
-#' @param x Image to be read in
+#' @param images Image to be read in
 #'
 #'
 #' @return Returns image contrast, similarity, symmetry, complexity
@@ -71,14 +71,14 @@ measure_images <- function(x) {
 #'
 #' @examples
 #' fluency(here("Images/image_1.png"))
-fluency <- function(x) {
-  t <- images$local_path %>%
+fluency <- function(images) {
+  images <- images$local_path %>%
     map(~ imagefluency::img_read(.))
-  result <- as.data.frame(
-    a = imagefluency::img_contrast(t[1]),
-    b = imagefluency::img_self_similarity(t[1]),
-    c = imagefluency::img_symmetry(t[1]),
-    d = imagefluency::img_complexity(t[1])
+  fluency_results <<- as.data.frame(
+    a = imagefluency::img_contrast(images[1]),
+    b = imagefluency::img_self_similarity(images[1]),
+    c = imagefluency::img_symmetry(images[1]),
+    d = imagefluency::img_complexity(images[1])
   )
 }
 
@@ -197,7 +197,7 @@ symmetry <- function(X) {
   ver_sym7 <- R7$color - R11$color
   ver_sym8 <- R8$color - R12$color
 
-  images_symmetry <<- data.frame(images, mean(hor_sym1),
+  symmetry_results <<- data.frame(images, mean(hor_sym1),
     kurtosis(hor_sym1),
     skewness(hor_sym1),
     mean(hor_sym2),
@@ -436,7 +436,7 @@ edge_analysis <- function(x) {
     skewness(R15$value),
     skewness(R16$value)
   )
-  edge_report <<- data.frame(images, PQ, ST)
+  edge_results <<- data.frame(images, PQ, ST)
 }
 
 #' Function to extract image colors
@@ -514,7 +514,7 @@ colors <- function(X, Y) {
 
 
   # push to global environment
-  Y <<- data.frame(
+  colors_results <<- data.frame(
     mean_red, deviation_red, mean_blue, deviation_blue, mean_green, deviation_green,
     mean_hue, deviation_hue, mean_saturation, deviation_saturation, mean_value,
     hue_region, deviation_saturation, luminance, lum_contrast
