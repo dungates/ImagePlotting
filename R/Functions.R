@@ -54,7 +54,7 @@ measure_images <- function(x) {
   text <- magick::image_ocr(nerb)
   meta <- magick::image_info(nerb)
   A <-data.frame(meta)
-  measured_images<<-dplyr::bind_cols(A, text)
+  measured_images<<-dplyr::bind_cols(A, "text"=text)
   print(measured_images)
 }
 
