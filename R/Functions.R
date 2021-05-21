@@ -37,7 +37,7 @@ load_images <- function(y) {
 }
 
 # reasonably fast, somewhat annoying to parse through a magick pointer
-#' Measure image information and ocr
+#' Measure image information and OCR (Optical character recognition)
 #'
 #' @title Measure Image
 #'
