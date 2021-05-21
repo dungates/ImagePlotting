@@ -7,7 +7,9 @@
 colors(X, Y)
 }
 \arguments{
-\item{X, Y}{}
+\item{X}{does a thing}
+
+\item{Y}{}
 }
 \value{
 returns a dataframe of images

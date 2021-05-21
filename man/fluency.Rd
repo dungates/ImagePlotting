@@ -4,10 +4,10 @@
 \alias{fluency}
 \title{Fluency}
 \usage{
-fluency(x)
+fluency(images)
 }
 \arguments{
-\item{x}{Image to be read in}
+\item{images}{Image to be read in}
 }
 \value{
 Returns image contrast, similarity, symmetry, complexity

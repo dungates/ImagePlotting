@@ -1,14 +1,3 @@
-# library(here) # calls the working directory
-# library(colordistance)
-# library(imagefluency)
-# library(magick)
-# library(imager)
-# library(OpenImageR)
-# library(dplyr)
-# library(ggplot2)
-# library(moments)
-# library(purrr)
-
 # perhaps add another function to name the output dataframe
 #' Load all images into one
 #'
