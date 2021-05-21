@@ -73,7 +73,7 @@ measure_images <- function(x) {
 #' fluency(here("Images/image_1.png"))
 fluency <- function(x) {
   t <- images$local_path %>%
-    map(~ magick::img_read(.))
+    map(~ imagefluency::img_read(.))
   result <- as.data.frame(
     a = imagefluency::img_contrast(t[1]),
     b = imagefluency::img_self_similarity(t[1]),
