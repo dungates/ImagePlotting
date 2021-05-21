@@ -81,6 +81,7 @@ fluency <- function(images) {
 #'
 #' @details This function relies on a 16 element grid where each cell is one quarter of the grid X and Y. The grid is numbered starting in the upper left hand corner progressing left to right across each row.
 #' @details An image is available showing where each element is in a grid. 
+#' @details Each symmetry function is the left hand row or column with its right hand side subtracted, 1-16 for example. Each balance element is then calculated for mean, kurtosis, and skewness. In the dataframe, interior and exteror refer to full column and row calculations for the insides and outsides of the grid
 #' @return Returns image symmetry by quarters
 #' @export
 #'
@@ -248,7 +249,7 @@ symmetry <- function(X) {
 #' @title Edge analysis
 #'
 #' @param x Folder where images are stored
-#'
+#' @details this function uses the same 16 cell grid for image segmentation used in the symmetry function
 #'
 #' @return Returns a dataframe consisting of images, PQ, ST
 #' @export
@@ -435,7 +436,7 @@ edge_analysis <- function(x) {
 #'
 #' @param X does a thing
 #' @param Y
-#'
+#' @details the color class is a function that yields tertiary color regions, see https://en.wikipedia.org/wiki/Tertiary_color
 #'
 #' @return returns a dataframe of images
 #' @export
@@ -512,6 +513,7 @@ colors <- function(X, Y) {
 }
 
 #' function that allows you to pass alpha to a GG plot that also encodes other things
+#' @description This function is designed to simplfy passing arguments into a ggplot with geom_image to produce an image plot
 #' @param D is where the data is
 #' @param X is the X var
 #' @param Y is the Y var
