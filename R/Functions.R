@@ -11,15 +11,15 @@
 
 # perhaps add another function to name the output dataframe
 #' Load all images into one
-#' 
+#'
 #' @title Image Loader
-#' 
+#'
 #' @param y Folder where images are stored
-#' 
-#' 
+#'
+#'
 #' @return returns a dataframe of images
 #' @export
-#' 
+#'
 #' @examples
 #' load_images(here("Images/"))
 load_images <- function(y) {
@@ -38,15 +38,15 @@ load_images <- function(y) {
 
 # reasonably fast, somewhat annoying to parse through a magick pointer
 #' Measure image information and ocr
-#' 
+#'
 #' @title Measure Image
-#' 
+#'
 #' @param x Image to be read in
-#' 
-#' 
+#'
+#'
 #' @return Returns image information and text to console
 #' @export
-#' 
+#'
 #' @examples
 #' measure_images(here("Images/image_1.png"))
 measure_images <- function(x) {
@@ -59,38 +59,40 @@ measure_images <- function(x) {
 
 # this is horribly slow
 #' Get image fluency
-#' 
+#'
 #' @title Fluency
-#' 
+#'
 #' @param x Image to be read in
-#' 
-#' 
+#'
+#'
 #' @return Returns image contrast, similarity, symmetry, complexity
 #' @export
-#' 
+#'
 #' @examples
 #' fluency(here("Images/image_1.png"))
 fluency <- function(x) {
-  t <- images$local_path %>% 
-    map( ~ magick::img_read(.))
-  result <- as.data.frame(a = imagefluency::img_contrast(t[1]),
-                      b = imagefluency::img_self_similarity(t[1]),
-                      c = imagefluency::img_symmetry(t[1]),
-                      d = imagefluency::img_complexity(t[1]))
+  t <- images$local_path %>%
+    map(~ magick::img_read(.))
+  result <- as.data.frame(
+    a = imagefluency::img_contrast(t[1]),
+    b = imagefluency::img_self_similarity(t[1]),
+    c = imagefluency::img_symmetry(t[1]),
+    d = imagefluency::img_complexity(t[1])
+  )
 }
 
 
 # symmetry function
 #' Gets image symmetry
-#' 
+#'
 #' @title Image Symmetry
-#' 
+#'
 #' @param x Folder where images are stored
-#' 
-#' 
+#'
+#'
 #' @return Returns image symmetry by quarters
 #' @export
-#' 
+#'
 #' @examples
 #' symmetry(here("Images/"))
 symmetry <- function(X) {
@@ -110,71 +112,71 @@ symmetry <- function(X) {
   R1 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R2 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R3 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R4 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   # UPPER MIDDLE ROW
   R5 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .25 * P & y < .5 * P)
-  
+
   R6 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .25 * P & y < .5 * P)
-  
+
   R7 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .25 * P & y < .5 * P)
-  
+
   R8 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .25 * P & y < .5 * P)
-  
+
   # LOWER MIDDLE ROW
   R9 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R10 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R11 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R12 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   # bottom row
   R13 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R14 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R15 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R16 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
-  
+
+
   # color function
   hor_sym1 <- R1$color - R4$color
   hor_sym2 <- R2$color - R3$color
@@ -184,7 +186,7 @@ symmetry <- function(X) {
   hor_sym6 <- R10$color - R11$color
   hor_sym7 <- R13$color - R16$color
   hor_sym8 <- R14$color - R15$color
-  
+
   ver_sym1 <- R1$color - R13$color
   ver_sym2 <- R2$color - R14$color
   ver_sym3 <- R3$color - R15$color
@@ -193,73 +195,73 @@ symmetry <- function(X) {
   ver_sym6 <- R6$color - R10$color
   ver_sym7 <- R7$color - R11$color
   ver_sym8 <- R8$color - R12$color
-  
+
   images_symmetry <<- data.frame(images, mean(hor_sym1),
-                                 kurtosis(hor_sym1),
-                                 skewness(hor_sym1),
-                                 mean(hor_sym2),
-                                 kurtosis(hor_sym2),
-                                 skewness(hor_sym2),
-                                 mean(hor_sym3),
-                                 kurtosis(hor_sym3),
-                                 skewness(hor_sym3),
-                                 mean(hor_sym4),
-                                 kurtosis(hor_sym4),
-                                 skewness(hor_sym4),
-                                 mean(hor_sym5),
-                                 kurtosis(hor_sym5),
-                                 skewness(hor_sym5),
-                                 mean(hor_sym6),
-                                 kurtosis(hor_sym6),
-                                 skewness(hor_sym6),
-                                 mean(hor_sym7),
-                                 kurtosis(hor_sym7),
-                                 skewness(hor_sym7),
-                                 mean(hor_sym8),
-                                 kurtosis(hor_sym8),
-                                 skewness(hor_sym8),
-                                 mean(ver_sym1),
-                                 kurtosis(ver_sym1),
-                                 skewness(ver_sym1),
-                                 mean(ver_sym2),
-                                 kurtosis(ver_sym2),
-                                 skewness(ver_sym2),
-                                 mean(ver_sym3),
-                                 kurtosis(ver_sym3),
-                                 skewness(ver_sym3),
-                                 mean(ver_sym4),
-                                 kurtosis(ver_sym4),
-                                 skewness(ver_sym4),
-                                 mean(ver_sym5),
-                                 kurtosis(ver_sym5),
-                                 skewness(ver_sym5),
-                                 mean(ver_sym6),
-                                 kurtosis(ver_sym6),
-                                 skewness(ver_sym6),
-                                 mean(ver_sym7),
-                                 kurtosis(ver_sym7),
-                                 skewness(ver_sym7),
-                                 mean(ver_sym8),
-                                 kurtosis(ver_sym8),
-                                 skewness(ver_sym8),
-                                 exterior_vert_sym = (mean((ver_sym1 + ver_sym2 + ver_sym3 + ver_sym4) / 4)),
-                                 interior_vert_sym = (mean((ver_sym5 + ver_sym6 + ver_sym7 + ver_sym8) / 4)),
-                                 interior_horiz_sym = (mean((hor_sym2 + hor_sym4 + hor_sym6 + hor_sym8) / 4)),
-                                 exterior_horiz_sym = (mean((hor_sym1 + hor_sym3 + hor_sym5 + hor_sym7) / 4))
+    kurtosis(hor_sym1),
+    skewness(hor_sym1),
+    mean(hor_sym2),
+    kurtosis(hor_sym2),
+    skewness(hor_sym2),
+    mean(hor_sym3),
+    kurtosis(hor_sym3),
+    skewness(hor_sym3),
+    mean(hor_sym4),
+    kurtosis(hor_sym4),
+    skewness(hor_sym4),
+    mean(hor_sym5),
+    kurtosis(hor_sym5),
+    skewness(hor_sym5),
+    mean(hor_sym6),
+    kurtosis(hor_sym6),
+    skewness(hor_sym6),
+    mean(hor_sym7),
+    kurtosis(hor_sym7),
+    skewness(hor_sym7),
+    mean(hor_sym8),
+    kurtosis(hor_sym8),
+    skewness(hor_sym8),
+    mean(ver_sym1),
+    kurtosis(ver_sym1),
+    skewness(ver_sym1),
+    mean(ver_sym2),
+    kurtosis(ver_sym2),
+    skewness(ver_sym2),
+    mean(ver_sym3),
+    kurtosis(ver_sym3),
+    skewness(ver_sym3),
+    mean(ver_sym4),
+    kurtosis(ver_sym4),
+    skewness(ver_sym4),
+    mean(ver_sym5),
+    kurtosis(ver_sym5),
+    skewness(ver_sym5),
+    mean(ver_sym6),
+    kurtosis(ver_sym6),
+    skewness(ver_sym6),
+    mean(ver_sym7),
+    kurtosis(ver_sym7),
+    skewness(ver_sym7),
+    mean(ver_sym8),
+    kurtosis(ver_sym8),
+    skewness(ver_sym8),
+    exterior_vert_sym = (mean((ver_sym1 + ver_sym2 + ver_sym3 + ver_sym4) / 4)),
+    interior_vert_sym = (mean((ver_sym5 + ver_sym6 + ver_sym7 + ver_sym8) / 4)),
+    interior_horiz_sym = (mean((hor_sym2 + hor_sym4 + hor_sym6 + hor_sym8) / 4)),
+    exterior_horiz_sym = (mean((hor_sym1 + hor_sym3 + hor_sym5 + hor_sym7) / 4))
   )
 }
 
 # edge analysis
 #' Performs edge analysis
-#' 
+#'
 #' @title Edge analysis
-#' 
+#'
 #' @param x Folder where images are stored
-#' 
-#' 
+#'
+#'
 #' @return Returns a dataframe consisting of images, PQ, ST
 #' @export
-#' 
+#'
 #' @examples
 #' load_images(here("Images/"))
 edge_analysis <- function(x) {
@@ -274,76 +276,76 @@ edge_analysis <- function(x) {
   P <- max(ZZZZZ$x)
   # select quarter regions
   # regions start in the upper left and head for bottom right
-  
+
   # select regions
   # TOP ROW
   R1 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R2 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R3 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   R4 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
-  
+
   # UPPER MIDDLE ROW
   R5 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .25 & y < .5 * P)
-  
+
   R6 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .25 & y < .5 * P)
-  
+
   R7 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .25 & y < .5 * P)
-  
+
   R8 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .25 & y < .5 * P)
-  
+
   # LOWER MIDDLE ROW
   R9 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R10 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R11 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   R12 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
-  
+
   # bottom row
   R13 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .25 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R14 <- ZZZZZ %>%
     dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R15 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   R16 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < Q) %>%
     dplyr::filter(y > .75 * P & y < P)
-  
+
   # sums of each region for canny edge
   R1_edge <- sum(R1$value)
   R2_edge <- sum(R2$value)
@@ -361,7 +363,7 @@ edge_analysis <- function(x) {
   R14_edge <- sum(R14$value)
   R15_edge <- sum(R15$value)
   R16_edge <- sum(R16$value)
-  
+
   # deviation for each region
   R1_edge_dev <- sd(R1$value)
   R2_edge_dev <- sd(R2$value)
@@ -379,7 +381,7 @@ edge_analysis <- function(x) {
   R14_edge_dev <- sd(R14$value)
   R15_edge_dev <- sd(R15$value)
   R16_edge_dev <- sd(R16$value)
-  
+
   PQ <- data.frame(
     images, R1_edge, R1_edge_dev,
     R2_edge, R2_edge_dev,
@@ -398,7 +400,7 @@ edge_analysis <- function(x) {
     R15_edge, R15_edge_dev,
     R16_edge, R16_edge_dev
   )
-  
+
   ST <- data.frame(
     kurtosis(R1$value),
     kurtosis(R2$value),
@@ -436,159 +438,17 @@ edge_analysis <- function(x) {
   edge_report <<- data.frame(images, PQ, ST)
 }
 
-# original function call
-#' Plotting function
-#' 
-#' @title Plot images
-#' 
-#' @param img,n=1000,lower=c(0,0.55,0),upper=c(0.25,1,0.25),color.space="rgb",ref.white=NULL,pch=20,main="default",from="sRGB",xlim="default",ylim="default",zlim="default",...
-#' 
-#' 
-#' @return returns a plot
-#' @export
-#' 
-#' @examples
-#' plot2(here("Images/"))
-plot2 <- function(img, n = 10000, lower = c(0, 0.55, 0), upper = c(
-  0.25,
-  1, 0.25
-), color.space = "rgb", ref.white = NULL, pch = 20,
-main = "default", from = "sRGB", xlim = "default", ylim = "default",
-zlim = "default", ...) {
-  if (is.character(img)) {
-    if (file.exists(img)) {
-      
-      # cleans the filename
-      if (tolower(color.space) == "lab") {
-        CIELab <- TRUE
-        hsv <- FALSE
-      }
-      else if (tolower(color.space) == "hsv") {
-        CIELab <- FALSE
-        hsv <- TRUE
-      }
-      else {
-        CIELab <- FALSE
-        hsv <- FALSE
-      }
-      
-      
-      # loads the image
-      img <- loadImage(img,
-                       upper = upper, lower = lower,
-                       hsv = hsv, CIELab = CIELab, sample.size = n,
-                       ref.white = ref.white
-      )
-    }
-  }
-  
-  # error control
-  else if (!is.list(img)) {
-    stop("'img' must be either a valid filepath to an image or a loadImage\n object")
-  }
-  if (main == "default") {
-    main <- paste(basename(img$path), ",", n, "points")
-  }
-  if (tolower(color.space) == "lab") {
-    if (!("filtered.lab.2d" %in% names(img))) {
-      
-      # converts color space
-      pix <- convertColorSpace(img$filtered.rgb.2d,
-                               from = from,
-                               to = "Lab", sample.size = n, from.ref.white = ref.white
-      )
-    }
-    else {
-      pix <- img$filtered.lab.2d
-    }
-    xlab <- "Luminance"
-    ylab <- "a (green-red)"
-    zlab <- "b (blue-yellow)"
-    xb <- c(0, 100)
-    yb <- c(-128, 127)
-    zb <- c(-128, 127)
-    if (is.numeric(n) & n < nrow(pix)) {
-      pix <- pix[sample(nrow(pix), n), ]
-    }
-    else {
-      n <- "all"
-    }
-    colExp <- grDevices::rgb(suppressMessages(convertColorSpace(
-      from = "Lab",
-      to = "sRGB", color.coordinate.matrix = pix, sample.size = "all",
-      from.ref.white = img$ref.white
-    )))
-    colExp2 <<- colExp
-  }
-  else {
-    xb <- c(0, 1)
-    yb <- c(0, 1)
-    zb <- c(0, 1)
-    if (tolower(color.space) == "hsv") {
-      pix <- img$filtered.hsv.2d
-      xlab <- "Hue"
-      ylab <- "Saturation"
-      zlab <- "Value"
-      if (is.numeric(n) & n < nrow(pix)) {
-        pix <- pix[sample(nrow(pix), n), ]
-      }
-      else {
-        n <- "all"
-      }
-      colExp <- apply(pix, 1, function(x) {
-        grDevices::hsv(
-          x[1],
-          x[2], x[3]
-        )
-      })
-    }
-    else {
-      pix <- img$filtered.rgb.2d
-      if (is.numeric(n) & n < dim(pix)[1]) {
-        pix <- pix[sample(nrow(pix), n), ]
-      }
-      else {
-        n <- "all"
-      }
-      colExp <- apply(pix, 1, function(x) {
-        grDevices::rgb(
-          x[1],
-          x[2], x[3]
-        )
-      })
-      xlab <- "Red"
-      ylab <- "Green"
-      zlab <- "Blue"
-    }
-  }
-  if (xlim[1] == "default") {
-    xlim <- xb
-  }
-  if (ylim[1] == "default") {
-    ylim <- yb
-  }
-  if (zlim[1] == "default") {
-    zlim <- zb
-  }
-  scatterplot3d::scatterplot3d(pix,
-                               pch = 20, color = colExp,
-                               xlab = xlab, ylab = ylab, zlab = zlab, main = main, xlim = xlim,
-                               ylim = ylim, zlim = zlim, ...
-  )
-  return(pix)
-}
-
 #' Function to extract image colors
-#' 
+#'
 #' @title Image plotter
-#' 
+#'
 #' @param X does a thing
 #' @param Y
-#' 
-#' 
+#'
+#'
 #' @return returns a dataframe of images
 #' @export
-#' 
+#'
 #' @examples
 #' colors() # This is unclear
 colors <- function(X, Y) {
@@ -601,9 +461,9 @@ colors <- function(X, Y) {
   deviation_blue <- sd(plot2$b * 255)
   mean_green <- mean(plot2$g * 255)
   deviation_green <- sd(plot2$g * 255)
-  
+
   # hsv colorset - im skeptical
-  
+
   plot3 <- loader$filtered.hsv.2d
   plot4 <- data.frame(plot3)
   mean_hue <- mean(plot4$h)
@@ -612,7 +472,7 @@ colors <- function(X, Y) {
   deviation_saturation <- sd(plot4$s)
   mean_value <- mean(plot4$v)
   deviation_value <- sd(plot4$v)
-  
+
   # six hue algor - processes from the colors in process
   # functions pass by FALSE only report on true
   if (mean_blue > mean_red) {
@@ -645,13 +505,13 @@ colors <- function(X, Y) {
       }
     }
   }
-  
+
   # luminance
   luminance <- (mean_red + mean_blue + mean_green) / 3
   # brightness with deviation of brightness
   lum_contrast <- (deviation_red + deviation_blue + deviation_green) / 3
-  
-  
+
+
   # push to global environment
   Y <<- data.frame(
     mean_red, deviation_red, mean_blue, deviation_blue, mean_green, deviation_green,
@@ -666,21 +526,19 @@ colors <- function(X, Y) {
 #' @param Y is the Y var
 #' @param A is the alpha
 #' @param S is relative size
-imageplot_output<-function(D,X,Y,A,S){
+imageplot_output <- function(D, X, Y, A, S) {
   transparent <- function(img) {
-    B<-paste(A, "*a", sep="")
+    B <- paste(A, "*a", sep = "")
     magick::image_fx(img, expression = B, channel = "alpha")
   }
- 
- 
+
+
   library(ggplot2)
-  ggplot(D, aes(X,Y)) +
+  ggplot(D, aes(X, Y)) +
     ggimage::geom_image(
       image = images$local_path,
       image_fun = transparent,
       size = S
-    )+dev.new(width=100, height=10)
- 
+    ) +
+    dev.new(width = 100, height = 10)
 }
-
-
