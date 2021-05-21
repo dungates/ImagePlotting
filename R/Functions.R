@@ -437,13 +437,14 @@ edge_analysis <- function(x) {
 #' @param X does a thing
 #' @param Y
 #' @details the color class is a function that yields tertiary color regions, see https://en.wikipedia.org/wiki/Tertiary_color
+#' @details a segmented version of colors could be available in the next zone
 #'
 #' @return returns a dataframe of images
 #' @export
 #'
 #' @examples
 #' colors() # This is unclear
-colors <- function(X, Y) {
+measure_colors <- function(X, Y) {
   loader <- loadImage(images$local_path, sample.size = 5000)
   plot <- loader$filtered.rgb.2d
   plot2 <- data.frame(plot)
