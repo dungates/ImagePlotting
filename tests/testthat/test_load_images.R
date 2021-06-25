@@ -48,7 +48,10 @@ context("load_images")
 
 #` Load image 
 testthat::test_that("Verify no errors on loading test image", {
-  testthat::expect_success(load_images("Images/tests/LoadTestImage"))
+  
+  load_images("Images/tests/LoadTestImage")
+  
+  testthat::expect_output()
   #testthat::expect_equal(images, )
 
 })
@@ -56,7 +59,7 @@ testthat::test_that("Verify no errors on loading test image", {
 #` Image was created as expected
 testthat::test_that("image was created as a data.frame list", {
   
-  testthat::expect_type(images, list)
+  testthat::expect_type(images, "list")
   testthat::expect_equal(class(images), "data.frame")
   #testthat::expect_equal(nrow(images), "data.frame")
   
@@ -65,27 +68,25 @@ testthat::test_that("image was created as a data.frame list", {
 #` 
 testthat::test_that("image data.frame is the right size", {
   
-  testthat::expect_equal(ncol(images), "2")
-  testthat::expect_equal(nrow(images), "2")
+  testthat::expect_equal(ncol(images), 2)
+  testthat::expect_equal(nrow(images), 1)
   
 })
 
-#` Only verifying local path, since each user's global path is unique                         
+#` Only verifying local path, since each user's global path is unique
 testthat::test_that("Verify test image local path is correct", {
   #testthat::expect_equal(images[1], )
 })
 
                          
-#` Delete and cleanup f loading test
+#` Delete and cleanup the loading test
 testthat::test_that("data.frame images deletes without error", {
   #::expect_equal(images[1]   , )
   #images deletes without error 
-  testthat::expect_success(rm("images"), TRUE)  
+  rm("images")
+  testthat::expect_success(TRUE)  
   #trying to access the deleted images data.frame returns error 
   #testthat::expect_
     
 })
 
-
-
-                         

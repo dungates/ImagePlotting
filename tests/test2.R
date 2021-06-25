@@ -9,8 +9,9 @@ library(ImagePlotting)
 
 load_images("Images")
 result<-colors(images)
-result<-measure_images(images)
-edge_analysis(images)
+
+
+edge_analysis(images) # edge report 
 symmetry(images)
 
 X<-c(1,1)
