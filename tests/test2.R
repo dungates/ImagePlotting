@@ -10,6 +10,8 @@ library(ImagePlotting)
 load_images("Images")
 result<-colors(images)
 
+load_images("Images/tests/Load10TestImages")
+
 
 edge_analysis(images) # edge report 
 symmetry(images)

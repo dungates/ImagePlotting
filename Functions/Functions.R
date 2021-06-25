@@ -161,7 +161,7 @@ symmetry <- function(x) {
   G<-B+C+((D+E)/2)/3
   H<-A+((B+C)/2)+((D+E)/2)/3
 
-  symmetry<<-data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right, 
+  symmetry_report<<-data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right, 
                         central_diagonal=A, corners_diagonal=G,
                         diagonal_overall=H)
 }
@@ -277,7 +277,7 @@ if(right_vert > left_vert){
 }
 
 
-thirds<<-data.frame(low_hor, high_hor, left_vert, right_vert, focal)
+thirds_report<<-data.frame(low_hor, high_hor, left_vert, right_vert, focal)
 
 }
 
@@ -544,7 +544,7 @@ colors <- function(X, Y) {
   
   
   # push to global environment
-  Y <<- data.frame(
+  color_report <<- data.frame(
     mean_red, deviation_red, mean_blue, deviation_blue, mean_green, deviation_green,
     mean_hue, deviation_hue, mean_saturation, deviation_saturation, mean_value,
     hue_region, deviation_saturation, luminance, lum_contrast
