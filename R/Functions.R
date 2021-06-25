@@ -42,8 +42,8 @@ measure_images <- function(x) {
   nerb <- magick::image_read(images$local_path)
   text <- magick::image_ocr(nerb)
   meta <- magick::image_info(nerb)
-  A <-data.frame(meta)
-  measured_images<<-dplyr::bind_cols(A, "text"=text)
+  A <- data.frame(meta)
+  measured_images <<- dplyr::bind_cols(A, "text" = text)
   print(measured_images)
 }
 
@@ -100,31 +100,31 @@ symmetry <- function(x) {
   Q <- max(ZZZZZ$y)
   P <- max(ZZZZZ$x)
 
-  #y axis symmetry
+  # y axis symmetry
   top <- ZZZZZ %>%
     dplyr::filter(y > 0 & y < .5 * P)
 
   bottom <- ZZZZZ %>%
     dplyr::filter(y > .5 * P & y == P)
 
-  balance<-mean(top$value)-mean(bottom$value)
-  horiz<-balance
-  sd_top<-sd(top$value)
-  sd_bottom<-sd(bottom$value)
- 
-  #x axis symmetry
+  balance <- mean(top$value) - mean(bottom$value)
+  horiz <- balance
+  sd_top <- sd(top$value)
+  sd_bottom <- sd(bottom$value)
+
+  # x axis symmetry
   left <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .5 * P)
-  
+
   right <- ZZZZZ %>%
     dplyr::filter(x > .5)
-  
-  balance<-mean(left$value)-mean(right$value)
-  vert<-balance
-  sd_left<-sd(left$value)
-  sd_right<-sd(right$value)
-  
-  #TRIANGLE FOLD
+
+  balance <- mean(left$value) - mean(right$value)
+  vert <- balance
+  sd_left <- sd(left$value)
+  sd_right <- sd(right$value)
+
+  # TRIANGLE FOLD
   T1 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .5 * Q) %>%
     dplyr::filter(y > 0 & y < .5 * P)
@@ -135,43 +135,44 @@ symmetry <- function(x) {
     dplyr::filter(x > 0 & x < .125 * Q) %>%
     dplyr::filter(y > .75 * P & y < .875 * P)
   T4 <- ZZZZZ %>%
-    dplyr::filter(x > .5 *Q & x < .75 * Q) %>%
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
     dplyr::filter(y > 0 & y < .25 * P)
   T5 <- ZZZZZ %>%
     dplyr::filter(x > .75 * Q & x < .875 * Q) %>%
     dplyr::filter(y > 0 * y & y < .125 * P)
-  
-  #bottom right big
-  T8 <- ZZZZZ %>%
-    dplyr::filter(x > .5 *Q & x < Q) %>%
-    dplyr::filter(y > .5 *P & y < P)
-  #upper right middle
-  T9 <- ZZZZZ %>%
-    dplyr::filter(x > .75 *Q & x < Q) %>%
-    dplyr::filter(y < .5 *P & y > .25 * P)
-  #upper right small
-  T10 <- ZZZZZ %>%
-    dplyr::filter(x > .25 *Q & x < .5 * Q) %>%
-    dplyr::filter(y > .75 * P & y < P)
-  
-  T11 <- ZZZZZ %>%
-    dplyr::filter(x < .125 *Q & x < .25 * Q) %>%
-    dplyr::filter(y > .875 * P & y <  P)
-  T12 <- ZZZZZ %>%
-    dplyr::filter(x > .875 * Q & x <  Q) %>%
-    dplyr::filter(y > .125 * P & y < .25 * P)
-  
-  A<-mean(T1$value)-mean(T8$value)
-  B<-mean(T4$value)-mean(T9$value)
-  C<-mean(T2$value)-mean(T10$value)
-  D<-mean(T3$value)-mean(T11$value)
-  E<-mean(T5$value)-mean(T12$value)
-  G<-B+C+((D+E)/2)/3
-  H<-A+((B+C)/2)+((D+E)/2)/3
 
-  symmetry<<-data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right, 
-                        central_diagonal=A, corners_diagonal=G,
-                        diagonal_overall=H)
+  # bottom right big
+  T8 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < Q) %>%
+    dplyr::filter(y > .5 * P & y < P)
+  # upper right middle
+  T9 <- ZZZZZ %>%
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y < .5 * P & y > .25 * P)
+  # upper right small
+  T10 <- ZZZZZ %>%
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
+
+  T11 <- ZZZZZ %>%
+    dplyr::filter(x < .125 * Q & x < .25 * Q) %>%
+    dplyr::filter(y > .875 * P & y < P)
+  T12 <- ZZZZZ %>%
+    dplyr::filter(x > .875 * Q & x < Q) %>%
+    dplyr::filter(y > .125 * P & y < .25 * P)
+
+  A <- mean(T1$value) - mean(T8$value)
+  B <- mean(T4$value) - mean(T9$value)
+  C <- mean(T2$value) - mean(T10$value)
+  D <- mean(T3$value) - mean(T11$value)
+  E <- mean(T5$value) - mean(T12$value)
+  G <- B + C + ((D + E) / 2) / 3
+  H <- A + ((B + C) / 2) + ((D + E) / 2) / 3
+
+  symmetry <<- data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right,
+    central_diagonal = A, corners_diagonal = G,
+    diagonal_overall = H
+  )
 }
 
 # thirds function
@@ -183,7 +184,7 @@ symmetry <- function(x) {
 #'
 #' @details Detects intensity of the use of the thirds on a traditional photographic layout
 #' @details Positive means there is more activity in the third versus the full image, negative means less
-#' @return Returns a dataframe with scores for each third versus the image and a discrete with which third is dominant 
+#' @return Returns a dataframe with scores for each third versus the image and a discrete with which third is dominant
 #' @export
 #'
 #' @examples
@@ -200,98 +201,97 @@ thirds <- function(x) {
   # segmentation task
   Q <- max(ZZZZZ$y)
   P <- max(ZZZZZ$x)
-  
-  
-  #vert 1
+
+
+  # vert 1
   V1 <- ZZZZZ %>%
     dplyr::filter(x > .16666 * Q & x < .5 * Q)
-  V2 <-ZZZZZ %>%
+  V2 <- ZZZZZ %>%
     dplyr::filter(x > .5 * Q & x < Q)
-  V3 <-ZZZZZ %>%
+  V3 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .16666 * Q)
-  
-  
-  #vert 2
+
+
+  # vert 2
   V4 <- ZZZZZ %>%
     dplyr::filter(x > .5 & x < .83333 * Q)
-  V5 <-ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .5* Q)
-  V6 <-ZZZZZ %>%
+  V5 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * Q)
+  V6 <- ZZZZZ %>%
     dplyr::filter(x > .83333 * Q & x < Q)
-  
-  
-  #horz 1
+
+
+  # horz 1
   H1 <- ZZZZZ %>%
     dplyr::filter(y > .16666 * P & y < .5 * P)
-  H2 <-ZZZZZ %>%
+  H2 <- ZZZZZ %>%
     dplyr::filter(y > .5 * P & y < P)
-  H3 <-ZZZZZ %>%
+  H3 <- ZZZZZ %>%
     dplyr::filter(y > 0 & y < .16666 * P)
-  
-  
-  #horz 2
+
+
+  # horz 2
   H4 <- ZZZZZ %>%
     dplyr::filter(y > .5 & y < .83333 * P)
-  H5 <-ZZZZZ %>%
-    dplyr::filter(y > 0 & y < .5* P)
-  H6 <-ZZZZZ %>%
+  H5 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  H6 <- ZZZZZ %>%
     dplyr::filter(y > .83333 * P & y < P)
-  
 
-L<-mean(H5$value)
-W<-mean(H6$value)
-Q<-mean(H4$value)
-I<-((Q+Q+Q+W)/4)
-low_hor<-L-I
 
-L<-mean(H1$value)
-W<-mean(H2$value)
-Q<-mean(H3$value)
-I<-((Q+Q+Q+W)/4)
-high_hor<-L-I
+  L <- mean(H5$value)
+  W <- mean(H6$value)
+  Q <- mean(H4$value)
+  I <- ((Q + Q + Q + W) / 4)
+  low_hor <- L - I
 
-L<-mean(V1$value)
-W<-mean(V2$value)
-Q<-mean(V3$value)
-I<-((Q+Q+Q+W)/4)
-left_vert<-L-I
+  L <- mean(H1$value)
+  W <- mean(H2$value)
+  Q <- mean(H3$value)
+  I <- ((Q + Q + Q + W) / 4)
+  high_hor <- L - I
 
-L<-mean(V4$value)
-W<-mean(V5$value)
-Q<-mean(V6$value)
-I<-((Q+Q+Q+W)/4)
-right_vert<-L-I
+  L <- mean(V1$value)
+  W <- mean(V2$value)
+  Q <- mean(V3$value)
+  I <- ((Q + Q + Q + W) / 4)
+  left_vert <- L - I
 
-thirds<<-data.frame(low_hor, high_hor, left_vert, right_vert)
+  L <- mean(V4$value)
+  W <- mean(V5$value)
+  Q <- mean(V6$value)
+  I <- ((Q + Q + Q + W) / 4)
+  right_vert <- L - I
 
-if(left_vert > right_vert){
-  if(left_vert > high_hor){
-    if(left_vert > low_hor){
-      focal<-"left_vert"
-    }else{
-      focal<-"low_hor"
+  thirds <<- data.frame(low_hor, high_hor, left_vert, right_vert)
+
+  if (left_vert > right_vert) {
+    if (left_vert > high_hor) {
+      if (left_vert > low_hor) {
+        focal <- "left_vert"
+      } else {
+        focal <- "low_hor"
+      }
     }
   }
-}
 
-if(right_vert > left_vert){
-  if(right_vert > low_hor){
-    if(right_vert > high_hor){
-      focal<-"right_vert"
-    }else{
-      focal<-"high_hor"
+  if (right_vert > left_vert) {
+    if (right_vert > low_hor) {
+      if (right_vert > high_hor) {
+        focal <- "right_vert"
+      } else {
+        focal <- "high_hor"
+      }
     }
   }
+
+
+  thirds <<- data.frame(low_hor, high_hor, left_vert, right_vert, focal)
 }
 
 
-thirds<<-data.frame(low_hor, high_hor, left_vert, right_vert, focal)
-
-}
 
 
- 
-  
 # edge analysis
 #' Performs edge analysis
 #'
