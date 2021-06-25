@@ -3,7 +3,8 @@ library(ImagePlotting)
 
 #test_file(path)
 
-test_check("ImagePlotting")
+# Removing test for now 
+# test_check("ImagePlotting")
 
 
 # 

@@ -8,9 +8,17 @@ library(ImagePlotting)
 
 
 load_images("Images")
+
+measure_images(images)
+
+fluency(images)
+
 result<-colors(images)
 
-load_images("Images/tests/Load10TestImages")
+load_images(here::here("Images/tests/Load10TestImages"))
+colors(here("images"))
+
+
 
 
 edge_analysis(images) # edge report 
