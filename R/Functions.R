@@ -499,7 +499,7 @@ edge_analysis <- function(x) {
 #' colors() # This is unclear
 measure_colors <- function(X, Y) {
   loader <- loadImage(images$local_path, sample.size = 5000)
-  plot <- loader$filtered.rgb.2d
+  plot <- colordistance::loader$filtered.rgb.2d
   plot2 <- data.frame(plot)
   mean_red <- mean(plot2$r * 255)
   deviation_red <- sd(plot2$r * 255)
