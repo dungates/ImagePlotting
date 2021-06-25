@@ -62,17 +62,7 @@ measure_images <- function(x) {
 #' fluency(here("Images/image_1.png"))
 fluency <- function(images) {
   fl_images <- images$local_path %>%
-<<<<<<< HEAD
-    map(~ imagefluency::img_read(.)) 
-  fluency_results <<- as.data.frame(
-    a = imagefluency::img_contrast(fl_images[1]),
-    b = imagefluency::img_self_similarity(fl_images[1]),
-    c = imagefluency::img_symmetry(fl_images[1]),
-    d = imagefluency::img_complexity(fl_images[1])
-  )
-=======
     map( ~ imagefluency::img_read(.))
-  
   fluency_results <<- map(1:length(fl_images), ~ data.frame(
     a = .x,
     b = imagefluency::img_contrast(fl_images[[.x]]),
@@ -81,7 +71,6 @@ fluency <- function(images) {
     e = imagefluency::img_complexity(fl_images[[.x]])
   )) %>%
     nest(data = c())
->>>>>>> 669c4e95617f9ec4f259eee484be95528ecd31a4
 }
 
 
@@ -299,7 +288,7 @@ thirds <- function(x) {
   }
 
 
-  thirds <<- data.frame(low_hor, high_hor, left_vert, right_vert, focal)
+  thirds_results <<- data.frame(low_hor, high_hor, left_vert, right_vert, focal)
 }
 
 
