@@ -61,14 +61,17 @@ measure_images <- function(x) {
 #' @examples
 #' fluency(here("Images/image_1.png"))
 fluency <- function(images) {
-  images <- images$local_path %>%
-    map(~ imagefluency::img_read(.))
-  fluency_results <<- as.data.frame(
-    a = imagefluency::img_contrast(images[1]),
-    b = imagefluency::img_self_similarity(images[1]),
-    c = imagefluency::img_symmetry(images[1]),
-    d = imagefluency::img_complexity(images[1])
-  )
+  fl_images <- images$local_path %>%
+    map( ~ imagefluency::img_read(.))
+  
+  fluency_results <<- map(1:length(fl_images), ~ data.frame(
+    a = .x,
+    b = imagefluency::img_contrast(fl_images[[.x]]),
+    c = imagefluency::img_self_similarity(fl_images[[.x]]),
+    d = imagefluency::img_symmetry(fl_images[[.x]]),
+    e = imagefluency::img_complexity(fl_images[[.x]])
+  )) %>%
+    nest(data = c())
 }
 
 
