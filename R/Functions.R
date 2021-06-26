@@ -38,12 +38,12 @@ load_images <- function(y) {
 #'
 #' @examples
 #' measure_images(here("Images/image_1.png"))
-measure_images <- function(x) {
-  nerb <- magick::image_read(images$local_path)
-  text <- magick::image_ocr(nerb)
-  meta <- magick::image_info(nerb)
-  A <- data.frame(meta)
-  measured_images <<- dplyr::bind_cols(A, "text" = text)
+measure_images <- function(images) {
+ ml_images<-images$local_path%>%
+   purrr::map( ~ magick::image_read(.))
+measured_images<-purrr::map(1:length(ml_images), ~ data.frame(
+  text = magick::image_ocr(ml_images[[.x]]),
+  meta = magick::image_info(ml_images[[.x]])))
   print(measured_images)
 }
 
