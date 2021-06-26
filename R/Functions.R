@@ -41,7 +41,7 @@ load_images <- function(y) {
 measure_images <- function(images) {
  ml_images<-images$local_path%>%
    purrr::map( ~ magick::image_read(.))
-measured_images<<-purrr::map(1:length(ml_images), ~ data.frame(
+measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
   a = .x,
   meta = magick::image_info(ml_images[[.x]])),
   text = magick::image_ocr(ml_images[[.x]]))
