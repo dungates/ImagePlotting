@@ -25,6 +25,34 @@ load_images <- function(y) {
   images <<- data.frame("local_path" = return1, "global_path" = return2)
 }
 
+# perhaps add another function to name the output dataframe
+#' Load all images into one
+#'
+#' @title Convert and Import
+#'
+#' @param X Folder where images are stored
+#'
+#'
+#' @return returns a dataframe of images
+#' @export
+#'
+#' @examples
+#' load_images(here("Images/"))
+convert_and_import<-function(x){
+dir.create("converted")
+purrr::map(.x = x$local_path, .f=lower_converter)
+converted_images<<-data.frame(local_path= list.files("converted", full.names = TRUE), old_local_path = images$local_path)
+}
+
+
+lower_converter <- function(x){
+  Z<-magick::image_read(x)
+  ZZtop<-magick::image_convert(Z, format = "png")
+  magick::image_write(ZZtop, paste("converted/",stringi::stri_rand_strings(1, 5, pattern = "[A-Za-z0-9]"),".png", sep = ""), format = "png")
+}
+
+
+
 # reasonably fast, somewhat annoying to parse through a magick pointer
 #' Measure image information and OCR (Optical character recognition)
 #'
