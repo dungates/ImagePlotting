@@ -187,112 +187,22 @@ symmetry <- function(x) {
 #'
 #' @details Detects intensity of the use of the thirds on a traditional photographic layout
 #' @details Positive means there is more activity in the third versus the full image, negative means less
-#' @return Returns a dataframe with scores for each third versus the image and a discrete with which third is dominant
+#' @return Returns a dataframe with scores for each third versus the image
 #' @export
 #'
 #' @examples
 #' symmetry(here("Images/"))
-thirds <- function(x) {
-  library(dplyr)
-  # this routine segments the image into 16 regions and calculates symmetry
-  rudy <- magick::image_read(x$local_path)
-  rudy2 <- magick::image_canny(rudy)
-  ZZZZ <- imager::magick2cimg(rudy2)
-  ZZZZZ <- as.data.frame(ZZZZ)
-  ZZZZZ <- ZZZZZ %>%
-    mutate(color = value * 255)
-  # segmentation task
-  Q <- max(ZZZZZ$y)
-  P <- max(ZZZZZ$x)
-
-
-  # vert 1
-  V1 <- ZZZZZ %>%
-    dplyr::filter(x > .16666 * Q & x < .5 * Q)
-  V2 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < Q)
-  V3 <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .16666 * Q)
-
-
-  # vert 2
-  V4 <- ZZZZZ %>%
-    dplyr::filter(x > .5 & x < .83333 * Q)
-  V5 <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .5 * Q)
-  V6 <- ZZZZZ %>%
-    dplyr::filter(x > .83333 * Q & x < Q)
-
-
-  # horz 1
-  H1 <- ZZZZZ %>%
-    dplyr::filter(y > .16666 * P & y < .5 * P)
-  H2 <- ZZZZZ %>%
-    dplyr::filter(y > .5 * P & y < P)
-  H3 <- ZZZZZ %>%
-    dplyr::filter(y > 0 & y < .16666 * P)
-
-
-  # horz 2
-  H4 <- ZZZZZ %>%
-    dplyr::filter(y > .5 & y < .83333 * P)
-  H5 <- ZZZZZ %>%
-    dplyr::filter(y > 0 & y < .5 * P)
-  H6 <- ZZZZZ %>%
-    dplyr::filter(y > .83333 * P & y < P)
-
-
-  L <- mean(H5$value)
-  W <- mean(H6$value)
-  Q <- mean(H4$value)
-  I <- ((Q + Q + Q + W) / 4)
-  low_hor <- L - I
-
-  L <- mean(H1$value)
-  W <- mean(H2$value)
-  Q <- mean(H3$value)
-  I <- ((Q + Q + Q + W) / 4)
-  high_hor <- L - I
-
-  L <- mean(V1$value)
-  W <- mean(V2$value)
-  Q <- mean(V3$value)
-  I <- ((Q + Q + Q + W) / 4)
-  left_vert <- L - I
-
-  L <- mean(V4$value)
-  W <- mean(V5$value)
-  Q <- mean(V6$value)
-  I <- ((Q + Q + Q + W) / 4)
-  right_vert <- L - I
-
-  thirds <<- data.frame(low_hor, high_hor, left_vert, right_vert)
-
-  if (left_vert > right_vert) {
-    if (left_vert > high_hor) {
-      if (left_vert > low_hor) {
-        focal <- "left_vert"
-      } else {
-        focal <- "low_hor"
-      }
-    }
-  }
-
-  if (right_vert > left_vert) {
-    if (right_vert > low_hor) {
-      if (right_vert > high_hor) {
-        focal <- "right_vert"
-      } else {
-        focal <- "high_hor"
-      }
-    }
-  }
-
-
-  thirds_results <<- data.frame(low_hor, high_hor, left_vert, right_vert, focal)
+thirds_images <- function(images) {
+  ml_images<-images$local_path%>%
+    purrr::map( ~ magick::image_read(.))
+  thirds_results_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
+    a = .x,
+    b = low1(ml_images[[.x]]),
+    c = high1(ml_images[[.x]]),
+    d = left1(ml_images[[.x]]),
+    e = right1(ml_images[[.x]])))
+  print(thirds_results_images)
 }
-
-
 
 
 # edge analysis
