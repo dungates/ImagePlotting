@@ -147,10 +147,10 @@ thirds_images <- function(images) {
     purrr::map( ~ magick::image_read(.))
   thirds_results_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
     a = .x,
-    b = low1(ml_images[[.x]]),
-    c = high1(ml_images[[.x]]),
-    d = left1(ml_images[[.x]]),
-    e = right1(ml_images[[.x]])))
+    low_hor = low1(ml_images[[.x]]),
+    high_hor = high1(ml_images[[.x]]),
+    left_vert = left1(ml_images[[.x]]),
+    right_vert = right1(ml_images[[.x]])))
   print(thirds_results_images)
 }
 
@@ -270,7 +270,8 @@ low1 <- function(x){
   print(low_hor)
   }
 high1 <- function(x){
-  rudy2 <- magick::image_canny(x)
+  
+  rudy2 <- magick::image_canny(A)
   ZZZZ <- imager::magick2cimg(rudy2)
   ZZZZZ <- as.data.frame(ZZZZ)
   ZZZZZ <- ZZZZZ %>%
@@ -282,7 +283,7 @@ high1 <- function(x){
   V1 <- ZZZZZ %>%
     dplyr::filter(x > .16666 * Q & x < .5 * Q)
   V2 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < Q)
+    dplyr::filter(x > .5 * max(x) & x < max(x))
   V3 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .16666 * Q)
   # vert 2
@@ -291,7 +292,7 @@ high1 <- function(x){
   V5 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .5 * Q)
   V6 <- ZZZZZ %>%
-    dplyr::filter(x > .83333 * Q & x < Q)
+    dplyr::filter(x > .83333 * max(x) & x < max(x))
   # horz 1
   H1 <- ZZZZZ %>%
     dplyr::filter(y > .16666 * P & y < .5 * P)
@@ -323,25 +324,20 @@ ZZZZZ <- ZZZZZ %>%
 Q <- max(ZZZZZ$y)
 P <- max(ZZZZZ$x)
 
-
 # vert 1
 V1 <- ZZZZZ %>%
   dplyr::filter(x > .16666 * Q & x < .5 * Q)
 V2 <- ZZZZZ %>%
-  dplyr::filter(x > .5 * Q & x < Q)
+  dplyr::filter(x > .5 * max(x) & x < max(x))
 V3 <- ZZZZZ %>%
   dplyr::filter(x > 0 & x < .16666 * Q)
-
-
 # vert 2
 V4 <- ZZZZZ %>%
   dplyr::filter(x > .5 & x < .83333 * Q)
 V5 <- ZZZZZ %>%
   dplyr::filter(x > 0 & x < .5 * Q)
 V6 <- ZZZZZ %>%
-  dplyr::filter(x > .83333 * Q & x < Q)
-
-
+  dplyr::filter(x > .83333 * max(x) & x < max(x))
 # horz 1
 H1 <- ZZZZZ %>%
   dplyr::filter(y > .16666 * P & y < .5 * P)
@@ -349,8 +345,6 @@ H2 <- ZZZZZ %>%
   dplyr::filter(y > .5 * P & y < P)
 H3 <- ZZZZZ %>%
   dplyr::filter(y > 0 & y < .16666 * P)
-
-
 # horz 2
 H4 <- ZZZZZ %>%
   dplyr::filter(y > .5 & y < .83333 * P)
@@ -358,6 +352,7 @@ H5 <- ZZZZZ %>%
   dplyr::filter(y > 0 & y < .5 * P)
 H6 <- ZZZZZ %>%
   dplyr::filter(y > .83333 * P & y < P)
+
 
 L <- mean(V1$value)
 W <- mean(V2$value)
@@ -381,20 +376,16 @@ right1 <- function(x){
   V1 <- ZZZZZ %>%
     dplyr::filter(x > .16666 * Q & x < .5 * Q)
   V2 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < Q)
+    dplyr::filter(x > .5 * max(x) & x < max(x))
   V3 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .16666 * Q)
-  
-  
   # vert 2
   V4 <- ZZZZZ %>%
     dplyr::filter(x > .5 & x < .83333 * Q)
   V5 <- ZZZZZ %>%
     dplyr::filter(x > 0 & x < .5 * Q)
   V6 <- ZZZZZ %>%
-    dplyr::filter(x > .83333 * Q & x < Q)
-  
-  
+    dplyr::filter(x > .83333 * max(x) & x < max(x))
   # horz 1
   H1 <- ZZZZZ %>%
     dplyr::filter(y > .16666 * P & y < .5 * P)
@@ -402,8 +393,6 @@ right1 <- function(x){
     dplyr::filter(y > .5 * P & y < P)
   H3 <- ZZZZZ %>%
     dplyr::filter(y > 0 & y < .16666 * P)
-  
-  
   # horz 2
   H4 <- ZZZZZ %>%
     dplyr::filter(y > .5 & y < .83333 * P)
@@ -442,11 +431,11 @@ edge_lower<- function(x){
     dplyr::filter(y > 0 & y < .25 * P)
   
   R3 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(x > .5 * max(x) & x < .75 * max(x)) %>%
     dplyr::filter(y > 0 & y < .25 * P)
   
   R4 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < max(x)) %>%
     dplyr::filter(y > 0 & y < .25 * P)
   
   # UPPER MIDDLE ROW
@@ -459,11 +448,11 @@ edge_lower<- function(x){
     dplyr::filter(y > .25 & y < .5 * P)
   
   R7 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(x > .5 * max(x) & x < .75 * max(x)) %>%
     dplyr::filter(y > .25 & y < .5 * P)
   
   R8 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < max(x)) %>%
     dplyr::filter(y > .25 & y < .5 * P)
   
   # LOWER MIDDLE ROW
@@ -480,7 +469,7 @@ edge_lower<- function(x){
     dplyr::filter(y > .5 * P & y < .75 * P)
   
   R12 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < max(x)) %>%
     dplyr::filter(y > .5 * P & y < .75 * P)
   
   # bottom row
@@ -493,11 +482,11 @@ edge_lower<- function(x){
     dplyr::filter(y > .75 * P & y < P)
   
   R15 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(x > .5 * max(x) & x < .75 * max(x)) %>%
     dplyr::filter(y > .75 * P & y < P)
   
   R16 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < max(x)) %>%
     dplyr::filter(y > .75 * P & y < P)
   
   # sums of each region for canny edge
@@ -618,7 +607,7 @@ symmetry_lower <- function(x) {
   
   # x axis symmetry
   left <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .5 * P)
+    dplyr::filter(x < .5 * max(y))
   
   right <- ZZZZZ %>%
     dplyr::filter(x > .5)
@@ -639,19 +628,19 @@ symmetry_lower <- function(x) {
     dplyr::filter(x > 0 & x < .125 * Q) %>%
     dplyr::filter(y > .75 * P & y < .875 * P)
   T4 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(x > .5 * max(x) & x < .75 * max(x))  %>%
     dplyr::filter(y > 0 & y < .25 * P)
   T5 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < .875 * Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < .875 * max(x)) %>%
     dplyr::filter(y > 0 * y & y < .125 * P)
   
   # bottom right big
   T8 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < Q) %>%
+    dplyr::filter(x > .5 * max(x) & x < max(x)) %>%
     dplyr::filter(y > .5 * P & y < P)
   # upper right middle
   T9 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(x > .75 * max(x) & x < max(x)) %>%
     dplyr::filter(y < .5 * P & y > .25 * P)
   # upper right small
   T10 <- ZZZZZ %>%
@@ -662,7 +651,7 @@ symmetry_lower <- function(x) {
     dplyr::filter(x < .125 * Q & x < .25 * Q) %>%
     dplyr::filter(y > .875 * P & y < P)
   T12 <- ZZZZZ %>%
-    dplyr::filter(x > .875 * Q & x < Q) %>%
+    dplyr::filter(x > .875 * max(x) & x < max(x)) %>%
     dplyr::filter(y > .125 * P & y < .25 * P)
   
   A <- mean(T1$value) - mean(T8$value)
@@ -713,3 +702,5 @@ lower_colors <- function(x) {
     mean_hue, deviation_hue, mean_saturation, deviation_saturation, mean_value, deviation_saturation, luminance, lum_contrast
   )
 }
+
+
