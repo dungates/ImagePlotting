@@ -67,6 +67,7 @@ lower_converter <- function(x){
 #' @examples
 #' measure_images(here("Images/image_1.png"))
 measure_images <- function(images) {
+  library(magrittr)
  ml_images<-images$local_path%>%
    purrr::map( ~ magick::image_read(.))
 measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
