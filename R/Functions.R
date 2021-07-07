@@ -174,7 +174,7 @@ thirds_images <- function(images) {
 edge_analysis <- function(images) {
   ml_images<-images$local_path%>%
     purrr::map( ~ magick::image_read(.))
-  measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
+  edged_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
     a = .x,
     d = edge_lower(ml_images[[.x]])))
   print(edged_images)
