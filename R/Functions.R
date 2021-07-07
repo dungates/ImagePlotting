@@ -590,3 +590,203 @@ imageplot_output <- function(D, X, Y, A, S) {
     ) +
     dev.new(width = 100, height = 10)
 }
+
+
+#completed lower-order functions
+low1 <- function(x){
+  library(dplyr)
+  rudy2 <- magick::image_canny(x)
+  ZZZZ <- imager::magick2cimg(rudy2)
+  ZZZZZ <- as.data.frame(ZZZZ)
+  ZZZZZ <- ZZZZZ %>%
+    mutate(color = value * 255)
+  # segmentation task
+  Q <- max(ZZZZZ$y)
+  P <- max(ZZZZZ$x)
+  # vert 1
+  V1 <- ZZZZZ %>%
+    dplyr::filter(x > .16666 * Q & x < .5 * Q)
+  V2 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < Q)
+  V3 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .16666 * Q)
+  # vert 2
+  V4 <- ZZZZZ %>%
+    dplyr::filter(x > .5 & x < .83333 * Q)
+  V5 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * Q)
+  V6 <- ZZZZZ %>%
+    dplyr::filter(x > .83333 * Q & x < Q)
+  # horz 1
+  H1 <- ZZZZZ %>%
+    dplyr::filter(y > .16666 * P & y < .5 * P)
+  H2 <- ZZZZZ %>%
+    dplyr::filter(y > .5 * P & y < P)
+  H3 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .16666 * P)
+  # horz 2
+  H4 <- ZZZZZ %>%
+    dplyr::filter(y > .5 & y < .83333 * P)
+  H5 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  H6 <- ZZZZZ %>%
+    dplyr::filter(y > .83333 * P & y < P)
+  L <- mean(H5$value)
+  W <- mean(H6$value)
+  Q <- mean(H4$value)
+  I <- ((Q + Q + Q + W) / 4)
+  low_hor <- L - I
+  print(low_hor)
+  }
+high1 <- function(x){
+  rudy2 <- magick::image_canny(x)
+  ZZZZ <- imager::magick2cimg(rudy2)
+  ZZZZZ <- as.data.frame(ZZZZ)
+  ZZZZZ <- ZZZZZ %>%
+    mutate(color = value * 255)
+  # segmentation task
+  Q <- max(ZZZZZ$y)
+  P <- max(ZZZZZ$x)
+  # vert 1
+  V1 <- ZZZZZ %>%
+    dplyr::filter(x > .16666 * Q & x < .5 * Q)
+  V2 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < Q)
+  V3 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .16666 * Q)
+  # vert 2
+  V4 <- ZZZZZ %>%
+    dplyr::filter(x > .5 & x < .83333 * Q)
+  V5 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * Q)
+  V6 <- ZZZZZ %>%
+    dplyr::filter(x > .83333 * Q & x < Q)
+  # horz 1
+  H1 <- ZZZZZ %>%
+    dplyr::filter(y > .16666 * P & y < .5 * P)
+  H2 <- ZZZZZ %>%
+    dplyr::filter(y > .5 * P & y < P)
+  H3 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .16666 * P)
+  # horz 2
+  H4 <- ZZZZZ %>%
+    dplyr::filter(y > .5 & y < .83333 * P)
+  H5 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  H6 <- ZZZZZ %>%
+    dplyr::filter(y > .83333 * P & y < P)
+  L <- mean(H1$value)
+  W <- mean(H2$value)
+  Q <- mean(H3$value)
+  I <- ((Q + Q + Q + W) / 4)
+  high_hor <- L - I
+  print(high_hor)
+}
+left1 <- function(x){
+rudy2 <- magick::image_canny(x)
+ZZZZ <- imager::magick2cimg(rudy2)
+ZZZZZ <- as.data.frame(ZZZZ)
+ZZZZZ <- ZZZZZ %>%
+  mutate(color = value * 255)
+# segmentation task
+Q <- max(ZZZZZ$y)
+P <- max(ZZZZZ$x)
+
+
+# vert 1
+V1 <- ZZZZZ %>%
+  dplyr::filter(x > .16666 * Q & x < .5 * Q)
+V2 <- ZZZZZ %>%
+  dplyr::filter(x > .5 * Q & x < Q)
+V3 <- ZZZZZ %>%
+  dplyr::filter(x > 0 & x < .16666 * Q)
+
+
+# vert 2
+V4 <- ZZZZZ %>%
+  dplyr::filter(x > .5 & x < .83333 * Q)
+V5 <- ZZZZZ %>%
+  dplyr::filter(x > 0 & x < .5 * Q)
+V6 <- ZZZZZ %>%
+  dplyr::filter(x > .83333 * Q & x < Q)
+
+
+# horz 1
+H1 <- ZZZZZ %>%
+  dplyr::filter(y > .16666 * P & y < .5 * P)
+H2 <- ZZZZZ %>%
+  dplyr::filter(y > .5 * P & y < P)
+H3 <- ZZZZZ %>%
+  dplyr::filter(y > 0 & y < .16666 * P)
+
+
+# horz 2
+H4 <- ZZZZZ %>%
+  dplyr::filter(y > .5 & y < .83333 * P)
+H5 <- ZZZZZ %>%
+  dplyr::filter(y > 0 & y < .5 * P)
+H6 <- ZZZZZ %>%
+  dplyr::filter(y > .83333 * P & y < P)
+
+L <- mean(V1$value)
+W <- mean(V2$value)
+Q <- mean(V3$value)
+I <- ((Q + Q + Q + W) / 4)
+left_vert <- L - I
+print(left_vert)
+}
+right1 <- function(x){
+  rudy2 <- magick::image_canny(x)
+  ZZZZ <- imager::magick2cimg(rudy2)
+  ZZZZZ <- as.data.frame(ZZZZ)
+  ZZZZZ <- ZZZZZ %>%
+    mutate(color = value * 255)
+  # segmentation task
+  Q <- max(ZZZZZ$y)
+  P <- max(ZZZZZ$x)
+  
+  
+  # vert 1
+  V1 <- ZZZZZ %>%
+    dplyr::filter(x > .16666 * Q & x < .5 * Q)
+  V2 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < Q)
+  V3 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .16666 * Q)
+  
+  
+  # vert 2
+  V4 <- ZZZZZ %>%
+    dplyr::filter(x > .5 & x < .83333 * Q)
+  V5 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * Q)
+  V6 <- ZZZZZ %>%
+    dplyr::filter(x > .83333 * Q & x < Q)
+  
+  
+  # horz 1
+  H1 <- ZZZZZ %>%
+    dplyr::filter(y > .16666 * P & y < .5 * P)
+  H2 <- ZZZZZ %>%
+    dplyr::filter(y > .5 * P & y < P)
+  H3 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .16666 * P)
+  
+  
+  # horz 2
+  H4 <- ZZZZZ %>%
+    dplyr::filter(y > .5 & y < .83333 * P)
+  H5 <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  H6 <- ZZZZZ %>%
+    dplyr::filter(y > .83333 * P & y < P)
+  
+  L <- mean(V4$value)
+  W <- mean(V5$value)
+  Q <- mean(V6$value)
+  I <- ((Q + Q + Q + W) / 4)
+  right_vert <<- L - I
+  print(right_vert)
+}
+
+
