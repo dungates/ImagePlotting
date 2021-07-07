@@ -20,7 +20,7 @@ load_images <- function(y) {
   # prints proof of concept
   print(return1)
   # full paths, if needed
-  return2 <- paste(working, return1, sep = "")
+  return2 <- paste(working, return1, sep = "/")
   # assign back to global environment
   images <<- data.frame("local_path" = return1, "global_path" = return2)
 }
