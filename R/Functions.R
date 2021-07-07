@@ -90,93 +90,15 @@ fluency <- function(images) {
 #'
 #' @examples
 #' symmetry(here("Images/"))
-symmetry <- function(x) {
-  library(dplyr)
-  # this routine segments the image into 16 regions and calculates symmetry
-  rudy <- magick::image_read(x$local_path)
-  rudy2 <- magick::image_canny(rudy)
-  ZZZZ <- imager::magick2cimg(rudy2)
-  ZZZZZ <- as.data.frame(ZZZZ)
-  ZZZZZ <- ZZZZZ %>%
-    mutate(color = value * 255)
-  # segmentation task
-  Q <- max(ZZZZZ$y)
-  P <- max(ZZZZZ$x)
-
-  # y axis symmetry
-  top <- ZZZZZ %>%
-    dplyr::filter(y > 0 & y < .5 * P)
-
-  bottom <- ZZZZZ %>%
-    dplyr::filter(y > .5 * P & y == P)
-
-  balance <- mean(top$value) - mean(bottom$value)
-  horiz <- balance
-  sd_top <- sd(top$value)
-  sd_bottom <- sd(bottom$value)
-
-  # x axis symmetry
-  left <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .5 * P)
-
-  right <- ZZZZZ %>%
-    dplyr::filter(x > .5)
-
-  balance <- mean(left$value) - mean(right$value)
-  vert <- balance
-  sd_left <- sd(left$value)
-  sd_right <- sd(right$value)
-
-  # TRIANGLE FOLD
-  T1 <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .5 * Q) %>%
-    dplyr::filter(y > 0 & y < .5 * P)
-  T2 <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .25 * Q) %>%
-    dplyr::filter(y > .5 * P & y < .75 * P)
-  T3 <- ZZZZZ %>%
-    dplyr::filter(x > 0 & x < .125 * Q) %>%
-    dplyr::filter(y > .75 * P & y < .875 * P)
-  T4 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
-    dplyr::filter(y > 0 & y < .25 * P)
-  T5 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < .875 * Q) %>%
-    dplyr::filter(y > 0 * y & y < .125 * P)
-
-  # bottom right big
-  T8 <- ZZZZZ %>%
-    dplyr::filter(x > .5 * Q & x < Q) %>%
-    dplyr::filter(y > .5 * P & y < P)
-  # upper right middle
-  T9 <- ZZZZZ %>%
-    dplyr::filter(x > .75 * Q & x < Q) %>%
-    dplyr::filter(y < .5 * P & y > .25 * P)
-  # upper right small
-  T10 <- ZZZZZ %>%
-    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
-    dplyr::filter(y > .75 * P & y < P)
-
-  T11 <- ZZZZZ %>%
-    dplyr::filter(x < .125 * Q & x < .25 * Q) %>%
-    dplyr::filter(y > .875 * P & y < P)
-  T12 <- ZZZZZ %>%
-    dplyr::filter(x > .875 * Q & x < Q) %>%
-    dplyr::filter(y > .125 * P & y < .25 * P)
-
-  A <- mean(T1$value) - mean(T8$value)
-  B <- mean(T4$value) - mean(T9$value)
-  C <- mean(T2$value) - mean(T10$value)
-  D <- mean(T3$value) - mean(T11$value)
-  E <- mean(T5$value) - mean(T12$value)
-  G <- B + C + ((D + E) / 2) / 3
-  H <- A + ((B + C) / 2) + ((D + E) / 2) / 3
-
-  symmetry <<- data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right,
-    central_diagonal = A, corners_diagonal = G,
-    diagonal_overall = H
-  )
+symmetry_analysis <- function(images) {
+  ml_images<-images$local_path%>%
+    purrr::map( ~ magick::image_read(.))
+  symmetry_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
+    a = .x,
+    symmetry_lower(ml_images[[.x]])))
+  print(symmetry_images)
 }
+
 
 # thirds function
 #' Gets image symmetry
@@ -704,4 +626,91 @@ edge_lower<- function(x){
     skewness(R16$value)
   )
   edge_results <<- data.frame(images, PQ, ST)
+}
+
+symmetry_lower <- function(x) {
+  library(dplyr)
+  # this routine segments the image into 16 regions and calculates symmetry
+  rudy2 <- magick::image_canny(x)
+  ZZZZ <- imager::magick2cimg(rudy2)
+  ZZZZZ <- as.data.frame(ZZZZ)
+  ZZZZZ <- ZZZZZ %>%
+    mutate(color = value * 255)
+  # segmentation task
+  Q <- max(ZZZZZ$y)
+  P <- max(ZZZZZ$x)
+  
+  # y axis symmetry
+  top <- ZZZZZ %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  
+  bottom <- ZZZZZ %>%
+    dplyr::filter(y > .5 * P & y == P)
+  
+  balance <- mean(top$value) - mean(bottom$value)
+  horiz <- balance
+  sd_top <- sd(top$value)
+  sd_bottom <- sd(bottom$value)
+  
+  # x axis symmetry
+  left <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * P)
+  
+  right <- ZZZZZ %>%
+    dplyr::filter(x > .5)
+  
+  balance <- mean(left$value) - mean(right$value)
+  vert <- balance
+  sd_left <- sd(left$value)
+  sd_right <- sd(right$value)
+  
+  # TRIANGLE FOLD
+  T1 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .5 * Q) %>%
+    dplyr::filter(y > 0 & y < .5 * P)
+  T2 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .25 * Q) %>%
+    dplyr::filter(y > .5 * P & y < .75 * P)
+  T3 <- ZZZZZ %>%
+    dplyr::filter(x > 0 & x < .125 * Q) %>%
+    dplyr::filter(y > .75 * P & y < .875 * P)
+  T4 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < .75 * Q) %>%
+    dplyr::filter(y > 0 & y < .25 * P)
+  T5 <- ZZZZZ %>%
+    dplyr::filter(x > .75 * Q & x < .875 * Q) %>%
+    dplyr::filter(y > 0 * y & y < .125 * P)
+  
+  # bottom right big
+  T8 <- ZZZZZ %>%
+    dplyr::filter(x > .5 * Q & x < Q) %>%
+    dplyr::filter(y > .5 * P & y < P)
+  # upper right middle
+  T9 <- ZZZZZ %>%
+    dplyr::filter(x > .75 * Q & x < Q) %>%
+    dplyr::filter(y < .5 * P & y > .25 * P)
+  # upper right small
+  T10 <- ZZZZZ %>%
+    dplyr::filter(x > .25 * Q & x < .5 * Q) %>%
+    dplyr::filter(y > .75 * P & y < P)
+  
+  T11 <- ZZZZZ %>%
+    dplyr::filter(x < .125 * Q & x < .25 * Q) %>%
+    dplyr::filter(y > .875 * P & y < P)
+  T12 <- ZZZZZ %>%
+    dplyr::filter(x > .875 * Q & x < Q) %>%
+    dplyr::filter(y > .125 * P & y < .25 * P)
+  
+  A <- mean(T1$value) - mean(T8$value)
+  B <- mean(T4$value) - mean(T9$value)
+  C <- mean(T2$value) - mean(T10$value)
+  D <- mean(T3$value) - mean(T11$value)
+  E <- mean(T5$value) - mean(T12$value)
+  G <- B + C + ((D + E) / 2) / 3
+  H <- A + ((B + C) / 2) + ((D + E) / 2) / 3
+  
+  symmetry <- data.frame(horiz, sd_top, sd_bottom, vert, sd_left, sd_right,
+                          central_diagonal = A, corners_diagonal = G,
+                          diagonal_overall = H
+  )
 }
