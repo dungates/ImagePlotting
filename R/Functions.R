@@ -145,13 +145,15 @@ symmetry_analysis <- function(images) {
 thirds_images <- function(images) {
   ml_images<-images$local_path%>%
     purrr::map( ~ magick::image_read(.))
-  thirds_results_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
+  thirds_results_images<-purrr::map_df(1:length(ml_images), ~ data.frame(
     a = .x,
     low_hor = low1(ml_images[[.x]]),
     high_hor = high1(ml_images[[.x]]),
     left_vert = left1(ml_images[[.x]]),
     right_vert = right1(ml_images[[.x]])))
-  print(thirds_results_images)
+  thirds_results<-thirds_results_images%>%mutate(vert_focal = ifelse(low_hor>high_hor, "Low", "High"))
+  thirds_results<<-thirds_results%>%mutate(hor_focal = ifelse(left_vert>right_vert, "Left", "Right"))
+  print(thirds_results)
 }
 
 
