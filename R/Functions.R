@@ -204,23 +204,12 @@ colors_results<<-purrr::map_df(.x = c_images, .f=lower_colors)
 #' @param X is the X var
 #' @param Y is the Y var
 #' @param A is the alpha
-#' @param S is relative size
-imageplot_output <- function(D, X, Y, A, S) {
+imageplot_output <-function(Q,X,Y,A){
   transparent <- function(img) {
     B <- paste(A, "*a", sep = "")
-    magick::image_fx(img, expression = B, channel = "alpha")
-  }
-
-
-  library(ggplot2)
-  ggplot(D, aes(X, Y)) +
-    ggimage::geom_image(
-      image = images$local_path,
-      image_fun = transparent,
-      size = S
-    ) +
-    dev.new(width = 100, height = 10)
-}
+    magick::image_fx(img, expression = B, channel = "alpha")}
+  G<-paste("ggplot(",Q, ",aes(",X,",",Y,"))+geom_image(image =",Q,"$local_path, image_fun=transparent)", sep = "")
+  eval(parse(text=G))}
 
 
 #completed lower-order functions
