@@ -15,6 +15,9 @@ Returns image contrast, similarity, symmetry, complexity
 \description{
 Get image fluency
 }
+\details{
+this function implements multiple tests from the Imagefluency package returning a single dataframe, this function can take quite a while to run.
+}
 \examples{
 fluency(here("Images/image_1.png"))
 }

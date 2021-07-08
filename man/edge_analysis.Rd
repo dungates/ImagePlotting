@@ -4,7 +4,7 @@
 \alias{edge_analysis}
 \title{Edge analysis}
 \usage{
-edge_analysis(x)
+edge_analysis(images)
 }
 \arguments{
 \item{x}{Folder where images are stored}
@@ -14,6 +14,13 @@ Returns a dataframe consisting of images, PQ, ST
 }
 \description{
 Performs edge analysis
+}
+\details{
+this function uses the same 16 cell grid for image segmentation used in the symmetry function
+
+underlying math in this function is from a mean of canny edges detected per cell and deviation of them
+
+the mean would speak to the total value of "ink" in the zone and the deviation may inform the character of the edges
 }
 \examples{
 load_images(here("Images/"))

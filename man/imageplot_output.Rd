@@ -4,19 +4,17 @@
 \alias{imageplot_output}
 \title{function that allows you to pass alpha to a GG plot that also encodes other things}
 \usage{
-imageplot_output(D, X, Y, A, S)
+imageplot_output(Q, X, Y, A)
 }
 \arguments{
-\item{D}{is where the data is}
-
 \item{X}{is the X var}
 
 \item{Y}{is the Y var}
 
 \item{A}{is the alpha}
 
-\item{S}{is relative size}
+\item{D}{is where the data is}
 }
 \description{
-function that allows you to pass alpha to a GG plot that also encodes other things
+This function is designed to simplify passing arguments into a ggplot with geom_image to produce an image plot
 }

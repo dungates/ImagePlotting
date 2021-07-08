@@ -4,7 +4,7 @@
 \alias{measure_images}
 \title{Measure Image}
 \usage{
-measure_images(x)
+measure_images(images)
 }
 \arguments{
 \item{x}{Image to be read in}
@@ -13,7 +13,10 @@ measure_images(x)
 Returns a dataframe called "measured_images" that is the meta data for the images and an OCR of image text
 }
 \description{
-Measure image information and ocr
+Measure image information and OCR (Optical character recognition)
+}
+\details{
+This function returns a unified dataframe that takes your loaded images dataframe and returns a dataframe with image measurements and an OCR reading of the text from the image.
 }
 \examples{
 measure_images(here("Images/image_1.png"))

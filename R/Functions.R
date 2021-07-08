@@ -165,7 +165,7 @@ thirds_images <- function(images) {
 #' @param x Folder where images are stored
 #' @details this function uses the same 16 cell grid for image segmentation used in the symmetry function
 #' @details underlying math in this function is from a mean of canny edges detected per cell and deviation of them
-#' @detials the mean would speak to the total value of "ink" in the zone and the deviation may inform the character of the edges
+#' @details the mean would speak to the total value of "ink" in the zone and the deviation may inform the character of the edges
 #'
 #' @return Returns a dataframe consisting of images, PQ, ST
 #' @export
@@ -186,7 +186,6 @@ edge_analysis <- function(images) {
 #' @title Image plotter
 #'
 #' @param X does a thing
-#' @param Y
 #' @details the color class is a function that yields tertiary color regions, see https://en.wikipedia.org/wiki/Tertiary_color
 #' @details a segmented version of colors could be available in the next zone
 #'
