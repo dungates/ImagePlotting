@@ -197,7 +197,10 @@ edge_analysis <- function(images) {
 #' colors() # This is unclear
 color_analysis<- function(x){
 c_images<-x$local_path
-colors_results<<-purrr::map_df(.x = c_images, .f=lower_colors)
+colors_results<-purrr::map_df(.x = c_images, .f=lower_colors)
+colors_results<<-colors_results%>%mutate(hue_region = ifelse(mean_blue>mean_red & mean_red >= mean_green, "Violet", ifelse(mean_blue>mean_red & mean_blue < mean_green, "Spring green",
+                                                      ifelse(mean_green > mean_red & mean_red >= mean_blue, "Chartreuse", ifelse(mean_green > mean_red & mean_green > mean_blue, "Azure",
+                                                      ifelse(mean_red >= mean_green & mean_green >= mean_blue, "Orange", "Rose"))))))
 }
 
 #' function that allows you to pass alpha to a GG plot that also encodes other things
