@@ -38,10 +38,10 @@ load_images <- function(y) {
 #'
 #' @examples
 #' load_images(here("Images/"))
-convert_and_import<-function(x){
-dir.create("converted")
-purrr::map(.x = x$local_path, .f=lower_converter)
-converted_images<<-data.frame(local_path= list.files("converted", full.names = TRUE), old_local_path = images$local_path)
+convert_and_import<-function(X){
+  dir.create("converted")
+  purrr::map(.x = x$local_path, .f=lower_converter)
+  converted_images<<-data.frame(local_path= list.files("converted", full.names = TRUE), old_local_path = images$local_path)
 }
 
 
@@ -58,7 +58,7 @@ lower_converter <- function(x){
 #'
 #' @title Measure Image
 #'
-#' @param x Image to be read in
+#' @param images Image to be read in
 #'
 #' @details This function returns a unified dataframe that takes your loaded images dataframe and returns a dataframe with image measurements and an OCR reading of the text from the image.
 #' @return Returns a dataframe called "measured_images" that is the meta data for the images and an OCR of image text
@@ -82,7 +82,7 @@ measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
 #'
 #' @title Fluency
 #'
-#' @param images Image to be read in
+#' @param image Image to be read in
 #'
 #'
 #' @return Returns image contrast, similarity, symmetry, complexity
@@ -90,8 +90,8 @@ measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
 #' @details this function implements multiple tests from the Imagefluency package returning a single dataframe, this function can take quite a while to run.
 #' @examples
 #' fluency(here("Images/image_1.png"))
-fluency <- function(images) {
-  fl_images <- images$local_path %>%
+fluency <- function(image) {
+  fl_images <- image$local_path %>%
     purrr::map( ~ imagefluency::img_read(.))
   fluency_results <<- purrr::map_df(1:length(fl_images), ~ data.frame(
     a = .x,
@@ -108,7 +108,7 @@ fluency <- function(images) {
 #'
 #' @title Image Symmetry
 #'
-#' @param x Folder where images are stored
+#' @param images Folder where images are stored
 #'
 #' @details Detects symmetry in an image along three axes.
 #' @details Closer to zero means more symmetrical, positive means the image has more ink left or up, negative the opposite
@@ -133,7 +133,7 @@ symmetry_analysis <- function(images) {
 #'
 #' @title Rule of Thirds
 #'
-#' @param x Folder where images are stored
+#' @param images Folder where images are stored
 #'
 #' @details Detects intensity of the use of the thirds on a traditional photographic layout
 #' @details Positive means there is more activity in the third versus the full image, negative means less
@@ -160,9 +160,9 @@ thirds_images <- function(images) {
 # edge analysis
 #' Performs edge analysis
 #'
-#' @title Edge analysis
+#' @title Edge Analysis
 #'
-#' @param x Folder where images are stored
+#' @param images Folder where images are stored
 #' @details this function uses the same 16 cell grid for image segmentation used in the symmetry function
 #' @details underlying math in this function is from a mean of canny edges detected per cell and deviation of them
 #' @details the mean would speak to the total value of "ink" in the zone and the deviation may inform the character of the edges
