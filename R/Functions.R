@@ -38,7 +38,7 @@ load_images <- function(y) {
 #'
 #' @examples
 #' load_images(here("Images/"))
-convert_and_import<-function(X){
+convert_and_import<-function(x){
   dir.create("converted")
   purrr::map(.x = x$local_path, .f=lower_converter)
   converted_images<<-data.frame(local_path= list.files("converted", full.names = TRUE), old_local_path = images$local_path)
@@ -90,7 +90,7 @@ measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
 #' @details this function implements multiple tests from the Imagefluency package returning a single dataframe, this function can take quite a while to run.
 #' @examples
 #' fluency(here("Images/image_1.png"))
-fluency <- function(image) {
+fluency_analysis <- function(image) {
   fl_images <- image$local_path %>%
     purrr::map( ~ imagefluency::img_read(.))
   fluency_results <<- purrr::map_df(1:length(fl_images), ~ data.frame(
@@ -142,7 +142,7 @@ symmetry_analysis <- function(images) {
 #'
 #' @examples
 #' symmetry(here("Images/"))
-thirds_images <- function(images) {
+thirds_analysis <- function(images) {
   ml_images<-images$local_path%>%
     purrr::map( ~ magick::image_read(.))
   thirds_results_images<-purrr::map_df(1:length(ml_images), ~ data.frame(
