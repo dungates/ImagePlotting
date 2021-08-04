@@ -95,10 +95,10 @@ fluency_analysis <- function(image) {
     purrr::map( ~ imagefluency::img_read(.))
   fluency_results <<- purrr::map_df(1:length(fl_images), ~ data.frame(
     a = .x,
-    b = imagefluency::img_contrast(fl_images[[.x]]),
-    c = imagefluency::img_self_similarity(fl_images[[.x]]),
-    d = imagefluency::img_symmetry(fl_images[[.x]]),
-    e = imagefluency::img_complexity(fl_images[[.x]])
+    contrast = imagefluency::img_contrast(fl_images[[.x]]),
+    self_similarity = imagefluency::img_self_similarity(fl_images[[.x]]),
+    symmetry = imagefluency::img_symmetry(fl_images[[.x]]),
+    complexity = imagefluency::img_complexity(fl_images[[.x]])
   )) 
 }
 
@@ -197,7 +197,7 @@ edge_analysis <- function(images) {
 color_analysis<- function(x){
 c_images<-x$local_path
 colors_results<-purrr::map_df(.x = c_images, .f=lower_colors)
-colors_results<<-colors_results%>%mutate(hue_region = ifelse(mean_blue>mean_red & mean_red >= mean_green, "Violet", ifelse(mean_blue>mean_red & mean_blue < mean_green, "Spring green",
+colors_results<<-colors_results%>%dplyr::mutate(hue_region = ifelse(mean_blue>mean_red & mean_red >= mean_green, "Violet", ifelse(mean_blue>mean_red & mean_blue < mean_green, "Spring green",
                                                       ifelse(mean_green > mean_red & mean_red >= mean_blue, "Chartreuse", ifelse(mean_green > mean_red & mean_green > mean_blue, "Azure",
                                                       ifelse(mean_red >= mean_green & mean_green >= mean_blue, "Orange", "Rose"))))))
 }
@@ -261,10 +261,10 @@ low1 <- function(x){
   I <- ((Q + Q + Q + W) / 4)
   low_hor <- L - I
   print(low_hor)
-  }
+  }x
 high1 <- function(x){
   
-  rudy2 <- magick::image_canny(A)
+  rudy2 <- magick::image_canny(x)
   ZZZZ <- imager::magick2cimg(rudy2)
   ZZZZZ <- as.data.frame(ZZZZ)
   ZZZZZ <- ZZZZZ %>%
