@@ -72,9 +72,9 @@ measure_images <- function(images) {
    purrr::map( ~ magick::image_read(.))
 measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
   a = .x,
-  meta = magick::image_info(ml_images[[.x]])),
-  text = magick::image_ocr(ml_images[[.x]]))
-  print(measured_images)
+  text = magick::image_ocr(ml_images[[.x]]), 
+  info = magick::image_info(ml_images[[.x]])))
+  print("OCR results may be misleading if images include no text")
 }
 
 # this is horribly slow
