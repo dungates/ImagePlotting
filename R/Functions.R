@@ -98,13 +98,14 @@ measured_images<<-purrr::map_df(1:length(ml_images), ~ data.frame(
 fluency_analysis <- function(image) {
   fl_images <- image$local_path %>%
     purrr::map( ~ imagefluency::img_read(.))
-  fluency_results <<- purrr::map_df(1:length(fl_images), ~ data.frame(
+  fluency_results <- purrr::map_df(1:length(fl_images), ~ data.frame(
     a = .x,
     contrast = imagefluency::img_contrast(fl_images[[.x]]),
     self_similarity = imagefluency::img_self_similarity(fl_images[[.x]]),
     symmetry = imagefluency::img_symmetry(fl_images[[.x]]),
     complexity = imagefluency::img_complexity(fl_images[[.x]])
   )) 
+  fluency_results<-distinct(fluency_results, a)
 }
 
 
@@ -702,4 +703,11 @@ lower_colors <- function(x) {
   )
 }
 
-
+#' @title Clear Converted
+#'
+#' @param y Folder where images are stored
+#'
+#'
+#' @return returns a dataframe of images
+#' @export
+#'
