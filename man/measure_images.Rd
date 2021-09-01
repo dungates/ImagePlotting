@@ -7,7 +7,7 @@
 measure_images(images)
 }
 \arguments{
-\item{x}{Image to be read in}
+\item{images}{Image to be read in}
 }
 \value{
 Returns a dataframe called "measured_images" that is the meta data for the images and an OCR of image text

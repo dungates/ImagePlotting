@@ -9,8 +9,7 @@
 #' @return returns a dataframe of images
 #' @export
 #'
-#' @examples
-#' load_images(here("Images/"))
+
 load_images <- function(y) {
   # x in this case is the name of the directory with the images
   # images would be a great example
@@ -36,14 +35,24 @@ load_images <- function(y) {
 #' @return returns a dataframe of images
 #' @export
 #'
-#' @examples
-#' load_images(here("Images/"))
+
 convert_and_import<-function(x){
   dir.create("converted")
   purrr::map(.x = x$local_path, .f=lower_converter)
   converted_images<<-data.frame(local_path= list.files("converted", full.names = TRUE), old_local_path = images$local_path)
 }
 
+# perhaps add another function to name the output dataframe
+#' Load all images into one
+#'
+#' @title Lower converter
+#'
+#' @param X Folder where images are stored
+#'
+#'
+#' @return returns a dataframe of images
+#' @export
+#'
 
 lower_converter <- function(x){
   Z<-magick::image_read(x)
@@ -213,7 +222,7 @@ imageplot_output <-function(Q,X,Y,A){
   transparent <- function(img) {
     B <- paste(A, "*a", sep = "")
     magick::image_fx(img, expression = B, channel = "alpha")}
-  G<-paste("ggplot(",Q, ",aes(",X,",",Y,"))+geom_image(image =",Q,"$local_path, image_fun=transparent)", sep = "")
+  G<-paste("ggplot(",Q, ",aes(",X,",",Y,"))+ggimage::geom_image(image =",Q,"$local_path, image_fun=transparent)", sep = "")
   eval(parse(text=G))}
 
 
@@ -262,7 +271,7 @@ low1 <- function(x){
   I <- ((Q + Q + Q + W) / 4)
   low_hor <- L - I
   print(low_hor)
-  }x
+  }
 high1 <- function(x){
   
   rudy2 <- magick::image_canny(x)

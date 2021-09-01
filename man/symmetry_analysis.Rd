@@ -7,7 +7,7 @@
 symmetry_analysis(images)
 }
 \arguments{
-\item{x}{Folder where images are stored}
+\item{images}{Folder where images are stored}
 }
 \value{
 Returns a dataframe with horizontal, vertical, and diagonal symmetry

@@ -1,0 +1,237 @@
+---
+title: "Image Plotting"
+author: "Bonnell, Faltesek, Gates, Lohberger"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ImagePlotting)
+
+```
+
+## Why Image Plotting?
+
+In 2011, the  Software Studies Initiative released a macro known as Image Plot for ImageJ. When combined with a system for measuring the properties of images, the macro allowed users to compose an Image Plot, where the images that they were analyzing would appear themselves as the points of a scatterplot. This is an extremely useful way to analyze visual data as it allows everyone to see the both a meta representation of information about the optical qualities of the images while experiencing them visually. The original documentation focused on patterns of change through an artists collection, for example, how did the works of Mondrain or Van Goh change through the years? 
+
+Underlying much of the rise of Cultural Analytics is the tension between close and distant reading which is often overplayed. The close reading of a particular image will always be an important project, what distant reading methods can provide are: ways of visualizing entire collections, tests for normative claims to clustering or trends, generative documents for encouraging new hypothesis formation. In this sense, the plots produced as image plots appear very much like marginalia in reading or notes taken during field work. 
+
+This particular library grew from work in a lower division undergraduate course at Oregon State University. Our endeavor here is not to provide an entirely new approach, but to bring multiple existing functions into a single commonly used framework that can easily be taught to undergraduates and employed in research by those who are not especially handy with computers. At the same time, in building this project we assume that the future of general education includes some level of data analysis education and that courses in learning common platforms and languages (like tidyverse and Rstudio) will replace standalone GUIs in just a few years. Because our program has links to both communication, art, design, and computer science, our tool set in this package is intended to be useful for 
+
+We designed this package to interface with the tidyverse more generally, all of our measurements are collected in dataframes with one case per row, our tables can easily be joined to make a very wide dataframe. The end plotting logic of this package is geom_image for ggplot2. If you are functional with dplyr and ggplot2, this package should provide you with a comprehensive set of image plotting tools. 
+
+
+### Importing
+
+For your convenience we have included a selection of images for analysis in this package, they can be called with the function “bernie.” These are twenty images of Bernie Sanders in his mittens from the inauguration, modified by a neural net. 
+
+Our basic importer function takes the name of your folder in quotes and yields a dataframe with each local and global path. This basic loader does not do anything to the images or even read them, it is a simplifier that helps you know where your files actually are. 
+
+
+```{r load, echo=FALSE}
+A<-"/Users/faltesed/Documents/ImagePlottingX/mittens"
+load_images(A)
+```
+
+This is always your starting point, which is helpful as it yields an entry in your global environment. It is often helpful to have your files in a single format, which in our case would be PNG. Our function convert_and_import will take the result of your load_images and will convert all of your images to PNG it will put them in a single folder named “converted” in the home directory of your R project. Each image will be assigned a new filename which is a random combination of numbers and letters, which is associated with the original name for that file. 
+
+WARNING: if you run convert and import multiple times, your converted directory will get larger and larger. In accordance with tidy principals our functions are non-destructive. Furthermore, we can imagine use cases where you might chose to convert and land in a single directory for further analysis. If you want to have a clean convert_and_import, delete the directory between function runs. 
+
+You can take a look at some of the individual converted Bernies by opening your “converted” directory, selecting an image with the radio button, and then using the “more” dropdown to open the image in another program. You can see that the images were successfully converted. 
+
+
+![Alt text] (/Users/faltesed/Documents/ImagePlottingX/Images/delete.png)
+
+```{r load2}
+convert_and_import(images)
+```
+
+### Basic Measurement
+
+Once your images are imported you need to measure them in some way. Your first step in measurement is measure_images, which predictably produces a dataframe called measured_images. This function can tell you many fun things about your images, like what kind of files they are (if you have not converted), their dimensions, color spaces, filesizes, and will OCR any text on the image. This can be very useful for the analysis of memes, our Bernie pictures have no text. 
+
+A second useful measurement method is fluency analysis, which employs the methods from the image fluency package, fielding a dataframe with contrast, self_similarity, symmetry, and complexity. This is a slower function that many others, but can produce really useful results for your analysis. 
+
+```{r measure1}
+measure_images(converted_images)
+```
+
+MOAR TEXT
+
+#### Your First Plot
+
+```{r measure2}
+#for your join
+library(dplyr)
+library(ggplot2)
+
+#combine the data side by side
+mypictures<-bind_cols(converted_images, measured_images)
+
+#the plotting code
+imageplot_output("mypictures", "a", "info.filesize", .5)
+```
+
+EXPLAIN THIS BAD BOI
+
+## Colors
+
+Colors are great fun and are also very useful. Our color methods are in a single function called color_analysis yielding a dataframe color_results. Under the hood, we are using a number of calculations from both RGB and HSV, depending on your needs. 
+
+Basic Colors
+mean_red
+Deviation_red
+Mean_green
+Deviation_green
+Mean_blue
+Deviation_blue
+
+### Color Theory
+
+To understand what these measure we need to take a detour into some color theory. In many primary schools the primary colors are taught as red, blue, and yellow. For subtractive color and rudimentary paints this then leads to a series of mixing choices and lovely paintings. More advanced versions of this, such as in offset printing, use cyan, magenta, and yellow, often with a layer of black to save money and produce higher contrast line effects, thus CMYK. There are colors where this is not quite as consistent and sharp as we may like which leads to more specific inks, pantones and the like. With light, we are adding colors to produce white. 
+
+Measuring mean red, blue, and green can tell us about how much of that color is present, but that doesn’t mean that the image is that color, what matters are ratios. An all white image would have a lot of every color and no standard deviation. Higher mean values tell you more of what color is present and the deviations show how much variation is present. Consider this image: the top is blue 255 and the bottom is red 255: 
+
+INSERT FIGURE ONE
+
+The values for mean red and blue are nearly directly between the two regions, thus the standard deviation is close to the mean values for red and blue. You will also notice that the values for green are very low as green appears in just some slivers of white on the edges of the image, the standard deviation for the green is also very low as nearly the entire image has no use of green. 
+
+Hue, saturation, and value provide another useful set of measurements for color. We can imagine use cases where you might prefer to use these factors rather than thinking about which raw RGB specifications. For example, it might be helpful to look for trends in saturation or comparing saturation and the use of a certain color, like red. While it would be possible to ask users to calculate their own transformations between RGB and HSV, we simply provide all in the dataframe for speed and convenience. 
+
+#### Color Plotting
+
+```{r colors, message=FALSE}
+
+color_analysis(converted_images)
+
+head(colors_results)
+
+```
+
+
+MORE TEXT
+
+```{r color2}
+
+mypictures<-bind_cols(mypictures, colors_results)
+
+imageplot_output("mypictures", "mean_red", "mean_blue", .5)
+
+```
+
+
+##Porportion and Balance
+
+While there was a symmetry method used in the basic section, we have written a few additional functions that work with proportion and balance. Our methods in this section are concerned with finding lines. 
+
+
+
+### Symmetry_anaylsis. 
+
+Ten items to report: 
+Horizontal symmetry
+SD of the top region, SD of the bottom
+
+Vertical symmetry
+Sd of the left region, sd of the right region
+
+Central diagonal symmetry along an integral x~y
+Central region
+Corner region
+
+
+
+
+### Thirds_analysis 
+
+This is our approach for reading images for the use of a standard set of composition trends known as the rule of thirds. Compositions generally position key figures on a tic-tac-toe like grid. This function segments each image into four thirds regions which are then compared for canny edges so that we can compre. NEgative scores mean that there is more activity not on the third, positive scores mean there is more there than the other third. If all scores are very low, it is likely that the image does not conform to the rule of thirds. 
+
+Notice that we have two discrete outputs which tell you which thirds were highest. These are simply there to avoid a calculation for you. In a few cases, the neural net did shift the thirds, meaning that core composition elements did change. 
+
+
+### Edges_analysis
+
+This is by far our most largest measurement. 
+
+Includes a region by region breakdown of the canny edges detected in each region and the relative standard deviation of the edges in that region. Each region also has a skewness measure and a kurtosis measure, which speak to how much in any given region the distribution leans and how peaky it is. 
+
+The use cases for this particular model would include looking at staks for particular regions where there is a higher density of activity or looking for defocused or empty areas. An approach looking for images that are blue with low edge values in regions 1-4 would be a “sky” detector. If faces were known to be in the images and thirds were established, the scores for R8 and R 12 could be used to look for lead room. There are many ways that you can imagine using this approach to compare particular areas across a set of images, we hope this particular result, while voluminous, is flexible. 
+
+Each represents one-sixteenth of the image numbered in rows from the top left corner, which is R1. The extreme bottom right is R16. 
+
+It is straight forward to write new functions that could approximate symmetry or focus detection 
+Note: it is not uncommon for this function to throw NaN when there are regions of the graphic with no edges. This is a drawback of our method. 
+
+### Advanced Analysis Methods
+
+
+
+
+##Outputs and Aesthetics
+
+So far you are familiar with our basic plotting function. This is intended to help folks who are unfamilar create meaningful plots. 
+
+Within the function there are really three distinct things happening: 
+A. a function is "passing alpha" to adjust the transparency of your images. 
+B. a ggplot2 object is using the standard grammar of graphics approach to build a plot
+C. the library ggimage is being used to append the images with modified alpha, which requires a specific assignment of file names
+
+```{r aesthetic1}
+library(ggplot2)
+
+#sub-routine A is passing alpha
+transparent <- function(img){magick::image_fx(img, expression= ".1*a", channel = "alpha")}
+
+#B is the basic GG plot
+ggplot(mypictures, aes(a, info.filesize))+
+  #and C is the geom
+  ggimage::geom_image(image=mypictures$local_path,image_fun=transparent) + coord_polar()
+
+
+```
+
+
+### Styles
+
+Because we are using the gg paradigm for producing output graphics, all of your strategies for using ggplot2 can be used here as well. Because we are using a particular geom, we can't play with many of the options on the front side of the cheatsheet. The back right hand side, is going to be where the fun begins. 
+
+```{r aesthetic2}
+
+#old stuff
+transparent <- function(img){magick::image_fx(img, expression= ".1*a", channel = "alpha")}
+
+ggplot(mypictures, aes(a, info.filesize))+
+  ggimage::geom_image(image=mypictures$local_path,image_fun=transparent) +
+  #newstuff
+  #let's make this polar with a linedrawn background and a big title
+  coord_polar()+theme_linedraw()+labs(title = "Mittens Are Warm.")
+
+  
+
+
+```
+
+While aeshtetics aren't perfect here, you can start to see how for things like a symmetry plot or other times when we are looking for outliers a polar plot could be really powerful. 
+
+#### Facets
+
+```{r aesthetic 3}
+
+#old stuff
+transparent <- function(img){magick::image_fx(img, expression= ".1*a", channel = "alpha")}
+
+ggplot(mypictures, aes(a, info.filesize))+
+  ggimage::geom_image(image=mypictures$local_path,image_fun=transparent) +
+  #newstuff
+  #no styling, but definitely faceting
+  facet_wrap(~a)
+
+  
+
+```
+
+
+
+
+

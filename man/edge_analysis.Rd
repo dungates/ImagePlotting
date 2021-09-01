@@ -2,12 +2,12 @@
 % Please edit documentation in R/Functions.R
 \name{edge_analysis}
 \alias{edge_analysis}
-\title{Edge analysis}
+\title{Edge Analysis}
 \usage{
 edge_analysis(images)
 }
 \arguments{
-\item{x}{Folder where images are stored}
+\item{images}{Folder where images are stored}
 }
 \value{
 Returns a dataframe consisting of images, PQ, ST

@@ -15,6 +15,3 @@ returns a dataframe of images
 \description{
 Load all images into one
 }
-\examples{
-load_images(here("Images/"))
-}
