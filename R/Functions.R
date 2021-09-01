@@ -30,8 +30,6 @@ load_images <- function(y) {
 #' @title Convert and Import
 #'
 #' @param X Folder where images are stored
-#'
-#'
 #' @return returns a dataframe of images
 #' @export
 convert_and_import<-function(x){
