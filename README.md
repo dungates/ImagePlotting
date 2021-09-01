@@ -2,6 +2,14 @@
 
 The early 2010s began a period of internet-based activism that was immediately embraced by much of mainstream liberalism without any rigorous analysis or appraisal of the organizational structure and limitations of these internet-based movements (Nagle, 2017). Image based web forums such as Reddit, 4chan and 8chan were the basis of many of these movements.
 
+## Installation
+
+ImagePlotting is not yet on the CRAN but can be installed with:
+
+``` r
+devtools::install_github("https://github.com/dungates/ImagePlotting")
+```
+
 ## File Structure
 
  - Data: All data retrieved using code in the import folder can be found here.
